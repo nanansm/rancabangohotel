@@ -1,0 +1,143 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BookBar from "../components/BookBar.astro";
+import T from "../components/T.astro";
+import { meetings, WA_URL } from "../data/content";
+---
+<Base
+  path="/meetings/"
+  title="MICE & Event Venue Garut — Ajisaka Meeting Room, Rancabango Hotel"
+  description="Venue MICE & event di Garut: meeting, seminar, gala dinner, gathering, retreat, dan team building. Ajisaka Meeting Room hingga 120 pax, udara sejuk pegunungan dan view sawah. Rancabango Hotel & Resort.">
+  <Header />
+  <main id="top">
+
+    <!-- ===== HERO ===== -->
+    <section class="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden bg-pine-deep">
+      <img src={meetings.hero} alt="Ajisaka Meeting Room Rancabango, ruang rapat untuk MICE dan seminar"
+        class="kenburns absolute inset-0 h-full w-full object-cover object-[center_72%]" fetchpriority="high" width="1800" height="1200" />
+      <div class="absolute inset-0 bg-gradient-to-t from-pine-deep/92 via-pine-deep/25 to-pine-deep/50"></div>
+      <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 pb-16 md:px-10 md:pb-24">
+        <div class="flex items-center gap-2.5 text-sm tracking-wide text-white/85 [text-shadow:0_1px_10px_rgba(0,0,0,0.4)]">
+          <img src="/logo/bird-white.webp" alt="" width="30" height="20" class="h-5 w-auto opacity-90" />
+          Rancabango Hotel · Garut
+        </div>
+        <p class="mt-6 font-script text-[clamp(1.9rem,6vw,2.9rem)] leading-none text-gold [text-shadow:0_2px_16px_rgba(0,0,0,0.45)]">
+          <T id="Bekerja, di tempat yang tenang" en="Work, somewhere calm" />
+        </p>
+        <h1 class="mt-3 max-w-[16ch] font-display text-[clamp(2rem,6.4vw,3.7rem)] font-bold leading-[1.06] text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]">
+          <T id="Meeting & Event" en="Meetings & Events" />
+        </h1>
+        <p class="mt-5 max-w-[48ch] text-lg leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+          <T id={meetings.intro.id} en={meetings.intro.en} />
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa"
+             class="rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
+            <T id="Minta penawaran via WhatsApp" en="Request a quote on WhatsApp" />
+          </a>
+          <a href="#kapasitas" class="rounded-full border border-white/50 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
+            <T id="Lihat kapasitas" en="See capacity" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CAPACITY ===== -->
+    <section id="kapasitas" class="bg-canvas px-6 py-24 md:px-10 md:py-32">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="max-w-[46ch]">
+          <p class="reveal font-script text-3xl text-teal">{meetings.room}</p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Satu ruang, empat cara menata" en="One room, four ways to arrange it" />
+          </h2>
+          <p class="reveal mt-5 text-lg leading-relaxed text-ink-soft">
+            <T id="Dari seminar besar sampai diskusi melingkar — Ajisaka menyesuaikan bentuk acaramu." en="From a large seminar to a round-table discussion — Ajisaka adapts to your event." />
+          </p>
+        </div>
+        <div class="reveal mt-12 grid grid-cols-2 divide-x divide-y divide-line overflow-hidden rounded-3xl border border-line lg:grid-cols-4 lg:divide-y-0">
+          {meetings.layouts.map((l) => (
+            <div class="bg-mist p-7 text-center md:p-9">
+              <p class="font-display text-5xl font-bold leading-none text-teal md:text-6xl">{l.cap}</p>
+              <p class="mt-1.5 text-xs uppercase tracking-[0.15em] text-ink-soft">pax</p>
+              <p class="mt-4 text-sm font-semibold text-ink">{l.name}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FEATURE BAND (nature + text) ===== -->
+    <section class="overflow-hidden bg-mist">
+      <div class="mx-auto grid max-w-[1400px] items-center gap-0 lg:grid-cols-2">
+        <div class="order-1">
+          <img src="/images/sawah-mountain-1.webp" loading="lazy"
+            alt="Sawah dan Gunung Guntur di sekitar Rancabango — latar untuk team building di alam"
+            class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full lg:min-h-[36rem]" />
+        </div>
+        <div class="order-2 px-6 py-16 md:px-14 md:py-24">
+          <h3 class="reveal font-display text-[clamp(1.6rem,3.6vw,2.4rem)] font-bold leading-[1.14] text-ink">
+            <T id="Rapat di dalam, tim tumbuh di luar" en="Meet inside, grow your team outside" />
+          </h3>
+          <p class="reveal mt-5 max-w-[48ch] text-lg leading-relaxed text-ink-soft">
+            <T id="Setelah sesi di ruang ber-AC, ajak tim keluar: perahu di danau, api unggun, dan lahan luas berlatar gunung. Udara sejuk pegunungan bikin fokus lebih lama — dan istirahat terasa benar-benar istirahat."
+               en="After a session in the air-conditioned room, take the team outside: boats on the lake, a bonfire, and wide grounds against the mountains. Cool highland air keeps focus longer — and breaks feel like real breaks." />
+          </p>
+          <ul class="reveal mt-7 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+            {meetings.features.map((f) => (
+              <li class="flex items-start gap-2.5 text-[15px] text-ink">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                <T id={f.id} en={f.en} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GALLERY (real corporate events) ===== -->
+    <section class="bg-canvas px-6 py-24 md:px-10 md:py-32">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="max-w-[52ch]">
+          <p class="reveal font-script text-3xl text-teal"><T id="Sudah terjadi di sini" en="Held here already" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Dari rapat pagi sampai gala malam" en="From morning meetings to evening galas" />
+          </h2>
+          <p class="reveal mt-5 text-lg leading-relaxed text-ink-soft">
+            <T id="Perusahaan datang untuk rapat serius, lalu tinggal untuk team building dan makan malam bersama. Ini beberapa momen yang pernah terjadi di Rancabango."
+               en="Companies come for serious meetings, then stay for team building and dinner together. A few moments that have happened at Rancabango." />
+          </p>
+        </div>
+        <div class="reveal mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {meetings.gallery.map((g) => (
+            <figure class="group relative block overflow-hidden rounded-2xl">
+              <img src={g.img} alt={g.id} loading="lazy" width="1200" height="900"
+                class="aspect-[4/3] w-full object-cover object-center transition duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]" />
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-pine-deep/80 via-transparent to-transparent"></div>
+              <figcaption class="absolute inset-x-0 bottom-0 z-10 p-3 md:p-4">
+                <span class="font-display text-sm font-bold text-white md:text-base"><T id={g.id} en={g.en} /></span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="relative flex min-h-[62vh] items-center overflow-hidden bg-pine-deep text-white">
+      <img src="/images/sawah-mountain-2.webp" loading="lazy" alt="Sawah dan gunung di sekitar Rancabango" class="absolute inset-0 h-full w-full object-cover opacity-40" />
+      <div class="absolute inset-0 bg-pine-deep/55"></div>
+      <div class="relative z-10 mx-auto w-full max-w-[900px] px-6 text-center md:px-10">
+        <p class="reveal forced-visible font-script text-[clamp(1.9rem,5vw,3rem)] leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.4)]">
+          <T id="Rencanakan acara timmu bersama kami." en="Plan your team's event with us." />
+        </p>
+        <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa" class="mt-8 inline-block rounded-full bg-white px-8 py-4 font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
+          <T id="Minta penawaran via WhatsApp" en="Request a quote on WhatsApp" />
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <BookBar />
+</Base>

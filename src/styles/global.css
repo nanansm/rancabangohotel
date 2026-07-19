@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/* ---- Brand fonts (self-hosted woff2) ---- */
+@font-face {
+  font-family: "Public Sans";
+  src: url("/fonts/PublicSans.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* Zing Rust SCRIPT — brand accent for short poetic sub-lines only (per campaign spec) */
+@font-face {
+  font-family: "Zing Script";
+  src: url("/fonts/ZingScript.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---- Tokens (OKLCH). Photography carries; palette is committed nature-green. ---- */
+@theme {
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-script: "Zing Script", "Public Sans", cursive;
+
+  /* light canvas — clean off-white, faint green tint (NOT warm cream) */
+  --color-canvas: oklch(0.987 0.004 150);
+  --color-canvas-2: oklch(0.962 0.008 152);
+  --color-mist: oklch(0.94 0.012 156);
+
+  /* dark moments — soft deep pine (natural, not saturated), used sparingly */
+  --color-pine: oklch(0.28 0.026 160);
+  --color-pine-deep: oklch(0.205 0.022 160);
+
+  /* brand blue (sampled from the Rancabango logo bird) */
+  --color-teal: #327289;
+  --color-teal-deep: #234f5e;
+  --color-teal-bright: #3d88a3;
+
+  /* gold accent (lesehan cushions) — used sparingly, one accent */
+  --color-gold: oklch(0.80 0.128 80);
+  --color-gold-deep: oklch(0.72 0.13 74);
+
+  /* text */
+  --color-ink: oklch(0.28 0.022 162);
+  --color-ink-soft: oklch(0.44 0.018 162);
+  --color-cream: oklch(0.965 0.012 92);
+  --color-line: oklch(0.88 0.012 150);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  font-family: var(--font-sans);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+/* Zing Script — poetic accent lines only, never body */
+.font-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* language toggle */
+[data-lang="en"] :where([data-t="id"]) { display: none; }
+[data-lang="id"] :where([data-t="en"]) { display: none; }
+
+/* ---- Reveal on scroll — content is VISIBLE by default. Motion only when JS is
+   active AND motion is allowed; a safety timeout guarantees nothing stays hidden. ---- */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+    will-change: opacity, transform;
+  }
+  html.js .reveal.is-in,
+  html.js .reveal.forced-visible { opacity: 1; transform: none; }
+}
+
+/* slow cinematic zoom for hero image */
+@media (prefers-reduced-motion: no-preference) {
+  .kenburns { animation: kb 18s var(--ease-out-expo) forwards; }
+  @keyframes kb { from { transform: scale(1.08); } to { transform: scale(1); } }
+}

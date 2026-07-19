@@ -1,0 +1,423 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BookBar from "../components/BookBar.astro";
+import T from "../components/T.astro";
+import { rooms, roomAmenities, experiences, packages, info, gallery, faq, REVIEWS,
+         BOOKING_URL, WA_URL, MAPS_URL, MAPS_EMBED,
+         PRICE_FROM, PRICE_DEAL } from "../data/content";
+
+// Format rupiah dengan titik ribuan tanpa bergantung ICU (Node build sering fallback ke koma).
+const rp = (n: number) => "Rp " + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.qId,
+    acceptedAnswer: { "@type": "Answer", text: f.aId },
+  })),
+};
+---
+<Base>
+  <Header />
+  <main id="top">
+
+    <!-- ===== 1 · ARRIVAL (hero, whisper) ===== -->
+    <section class="relative flex min-h-[100dvh] flex-col justify-center overflow-hidden bg-pine-deep">
+      <picture>
+        <source media="(min-width:768px)" srcset="/images/aerial-1.webp" />
+        <img src="/images/aerial-3.webp" alt="Rancabango Hotel & Resort di kaki Gunung Guntur, Garut — sawah, kolam, dan cottage kayu dari udara"
+          class="kenburns absolute inset-0 h-full w-full object-cover object-[center_42%]" fetchpriority="high" width="2200" height="1238" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-b from-pine-deep/35 via-pine-deep/10 to-pine-deep/70"></div>
+
+      <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 md:px-10">
+        <div class="flex items-center gap-2.5 text-sm tracking-wide text-white/85 [text-shadow:0_1px_10px_rgba(0,0,0,0.4)]">
+          <img src="/logo/bird-white.webp" alt="" width="30" height="20" class="h-5 w-auto opacity-90" />
+          Garut · <T id="Nuansa Bali" en="Balinese ambience" />
+        </div>
+        <h1 class="mt-6 font-script text-[clamp(2.75rem,9vw,5.5rem)] leading-[0.95] text-white [text-shadow:0_2px_26px_rgba(0,0,0,0.4)]">
+          A place to be present
+          <span class="sr-only"> — Rancabango Hotel &amp; Resort, hotel nuansa Bali di kaki Gunung Guntur, Garut</span>
+        </h1>
+        <p class="mt-7 max-w-md text-lg leading-relaxed text-white/90 [text-shadow:0_1px_14px_rgba(0,0,0,0.45)]">
+          <T id="Di kaki Gunung Guntur, waktu berjalan lebih pelan. Datang untuk hadir — bukan untuk buru-buru."
+             en="At the foot of Mount Guntur, time moves slower. Come to be present — not to rush." />
+        </p>
+      </div>
+
+      <a href="#tone" class="absolute inset-x-0 bottom-8 z-10 mx-auto flex w-max flex-col items-center gap-2 text-white/70 transition hover:text-white" aria-label="Turun">
+        <span class="text-xs tracking-[0.25em] uppercase"><T id="Telusuri" en="Wander in" /></span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" class="animate-bounce"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+      </a>
+    </section>
+
+    <!-- ===== 2 · THE TONE (manifesto + positioning: ketenangan) ===== -->
+    <section id="tone" class="relative overflow-hidden bg-canvas px-6 py-28 md:px-10 md:py-40">
+      <img src="/logo/bird-teal.webp" alt="" aria-hidden="true" class="pointer-events-none absolute -right-16 top-1/2 w-[min(46rem,80%)] -translate-y-1/2 opacity-[0.05]" />
+      <div class="relative mx-auto max-w-[1000px]">
+        <p class="reveal font-script text-3xl text-teal md:text-4xl">
+          <T id="Sebuah jeda" en="A pause" />
+        </p>
+        <h2 class="reveal mt-6 max-w-[22ch] font-display text-[clamp(1.9rem,5vw,3.4rem)] font-bold leading-[1.12] text-ink">
+          <T id="Kamu datang untuk sesuatu yang langka: tenang." en="You come for something rare: calm." />
+        </h2>
+        <div class="reveal mt-10 grid gap-8 text-lg leading-relaxed text-ink-soft md:max-w-[62ch]">
+          <p><T id="Rancabango bukan tujuan wisata yang riuh. Ia ruang untuk benar-benar berhenti sejenak — kolam dengan pemandangan gunung, danau dengan perahu, kolam ikan, dan taman yang luas. Nuansa Bali yang tenang, di kaki gunung, jauh dari keramaian."
+                en="Rancabango isn't a noisy tourist stop. It's a space to truly pause — a mountain-view pool, a lake with boats, a fish pond, and wide gardens. A calm Balinese ambience at the foot of the mountain, far from the crowds." /></p>
+          <p class="font-script text-2xl text-ink md:text-3xl">
+            <T id="Alamnya nyata. Nadanya Bali." en="The nature is real. The tone is Balinese." />
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3 · THE STAY (8 rooms + price anchor + member) ===== -->
+    <section id="stay" class="bg-mist py-24 md:py-36">
+      <div class="mx-auto max-w-[1280px] px-6 md:px-10">
+        <div class="max-w-[52ch]">
+          <p class="reveal font-script text-3xl text-teal"><T id="Tempat pulang" en="Somewhere to land" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Delapan tipe kamar, satu ketenangan" en="Eight room types, one calm" />
+          </h2>
+          <p class="reveal mt-5 text-lg leading-relaxed text-ink-soft">
+            <T id="Dari kamar hangat untuk berdua sampai villa kayu untuk keluarga besar — masing-masing dengan ketenangannya sendiri."
+               en="From a warm room for two to a wooden villa for the whole family — each with a calm of its own." />
+          </p>
+          <div class="reveal mt-4 flex items-center gap-2 text-sm text-ink">
+            <span class="flex text-gold" aria-hidden="true">
+              {Array.from({ length: 5 }).map(() => (<svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 20.5l1.4-6.8L2.2 9l6.9-.7z"/></svg>))}
+            </span>
+            <span><strong class="font-semibold">{REVIEWS.rating}</strong>/5 · <T id={`${REVIEWS.count.toLocaleString("en").replace(/,/g,".")} ulasan di Google`} en={`${REVIEWS.count.toLocaleString("en").replace(/,/g,".")} reviews on Google`} /></span>
+          </div>
+        </div>
+
+        <!-- Price anchor -->
+        <div class="reveal mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-2xl border border-teal/20 bg-canvas px-6 py-5">
+          <span class="text-sm text-ink-soft"><T id="Menginap mulai" en="Stays from" /></span>
+          <span class="text-base font-medium text-ink-soft opacity-60 line-through">{rp(PRICE_FROM)}</span>
+          <span class="font-display text-2xl font-bold text-teal md:text-3xl">{rp(PRICE_DEAL)}<span class="text-base font-medium text-ink-soft"> / <T id="malam" en="night" /></span></span>
+          <span class="text-sm text-ink-soft"><T id="— pakai kode RCB2026 saat booking langsung" en="— use code RCB2026 when you book direct" /></span>
+        </div>
+      </div>
+
+      <div class="mx-auto max-w-[1280px] px-6 md:px-10">
+        <div class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+          {rooms.map((r) => (
+            <a href={BOOKING_URL} target="_blank" rel="noopener" data-fb="reservasi"
+               class="group flex flex-col overflow-hidden rounded-2xl bg-canvas shadow-[0_1px_0_rgba(0,0,0,0.04)] transition hover:shadow-lg">
+              <div class="overflow-hidden">
+                <img src={r.img} alt={`Kamar ${r.name} — Rancabango Hotel & Resort`} loading="lazy" width="1400" height="900"
+                  class="aspect-[4/3] w-full object-cover transition duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]" />
+              </div>
+              <div class="flex flex-1 flex-col p-4">
+                <h3 class="font-display text-base font-bold tracking-tight text-ink">{r.name}</h3>
+                <p class="mt-1 hidden text-[13px] leading-snug text-ink-soft sm:block"><T id={r.id} en={r.en} /></p>
+                <div class="mt-3 border-t border-line pt-3">
+                  <span class="whitespace-nowrap font-display text-[13px] font-bold text-teal sm:text-[15px]">{rp(r.price)}<span class="text-[11px] font-normal text-ink-soft">/<T id="malam" en="night" /></span></span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Amenities strip -->
+        <ul class="reveal mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-soft">
+          {roomAmenities.map((a) => (
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              <T id={a.id} en={a.en} />
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="/rooms" class="rounded-full bg-teal px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-teal-deep">
+            <T id="Lihat semua kamar" en="See all rooms" />
+          </a>
+          <a href={BOOKING_URL} target="_blank" rel="noopener" data-fb="reservasi"
+             class="group inline-flex items-center gap-2 text-sm font-semibold text-teal">
+            <T id="Cek tanggal & harga" en="Check dates & rates" />
+            <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4 · THE LANDSCAPE (full-bleed, no CTA) ===== -->
+    <section id="landscape" class="relative flex min-h-[78vh] items-end overflow-hidden md:min-h-[92vh]">
+      <img src="/images/aerial-2.webp" width="2200" height="1238" loading="lazy"
+        alt="Panorama sawah, danau, dan barisan gunung mengelilingi Rancabango"
+        class="absolute inset-0 h-full w-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-t from-pine-deep/65 via-transparent to-transparent"></div>
+      <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 pb-16 md:px-10 md:pb-24">
+        <p class="reveal forced-visible max-w-2xl font-script text-[clamp(1.9rem,5.5vw,3.5rem)] leading-[1.1] text-white [text-shadow:0_2px_22px_rgba(0,0,0,0.45)]">
+          <T id="Bangun dengan kabut gunung, tidur dengan udara sejuk." en="Wake to mountain mist, sleep in cool highland air." />
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 5 · EXPERIENCE (activities) ===== -->
+    <section id="experience" class="bg-canvas px-6 py-24 md:px-10 md:py-36">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="max-w-[52ch]">
+          <p class="reveal font-script text-3xl text-teal"><T id="Hari-harimu di sini" en="Your days here" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Kenangan datang dari hal sederhana" en="Memories come from simple things" />
+          </h2>
+          <p class="reveal mt-5 text-lg leading-relaxed text-ink-soft">
+            <T id="Bukan daftar wahana. Tapi sore di atas perahu, tawa anak memberi makan hewan, langkah kuda menyusuri sawah, dan api unggun saat malam turun — hal kecil yang justru menempel lama."
+               en="Not a list of rides. But an afternoon on the water, a child's laugh feeding the animals, a pony's steps through the fields, and a bonfire as night falls — small things that stay the longest." />
+          </p>
+        </div>
+        <!-- Grid seragam & sejajar — semua kartu satu rasio (4:5), foto di-crop tengah. -->
+        <div class="reveal mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {experiences.map((x) => (
+            <figure class="group relative block overflow-hidden rounded-2xl">
+              <img src={x.img} alt={x.id} loading="lazy" width="1200" height="1500"
+                class="aspect-[4/5] w-full object-cover object-center transition duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]" />
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-pine-deep/75 via-transparent to-transparent"></div>
+              <figcaption class="absolute inset-x-0 bottom-0 z-10 p-4 md:p-5">
+                <h3 class="font-display text-lg font-bold text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] md:text-xl"><T id={x.id} en={x.en} /></h3>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 6 · RASA & RUANG (dining) ===== -->
+    <section id="rasa" class="overflow-hidden bg-mist">
+      <div class="mx-auto grid max-w-[1400px] items-center gap-0 lg:grid-cols-2">
+        <div class="order-2 px-6 py-20 md:px-14 md:py-28 lg:order-1">
+          <p class="reveal font-script text-3xl text-teal"><T id="Rasa & ruang" en="Taste & space" /></p>
+          <h2 class="reveal mt-4 max-w-[18ch] font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Makan malam di tepi danau, ditemani cahaya senja" en="Dinner by the lake, in the last of the light" />
+          </h2>
+          <p class="reveal mt-5 max-w-[52ch] text-lg leading-relaxed text-ink-soft">
+            <T id="Arummanis Restaurant menyajikan masakan Asia dan internasional dalam arsitektur khas Bali, menghadap danau — dengan live music yang lembut tiap akhir pekan."
+               en="Arummanis Restaurant serves Asian and international dishes in Balinese architecture, facing the lake — with soft live music every weekend." />
+          </p>
+        </div>
+        <div class="order-1 lg:order-2">
+          <img src="/images/pond-mountain-2.webp" loading="lazy"
+            alt="Meja makan Arummanis Restaurant menghadap danau dan cottage kayu"
+            class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full lg:min-h-[34rem]" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7 · KEMBALI BERSAMA (emotional peak) ===== -->
+    <section id="bersama" class="relative flex min-h-[80vh] items-center overflow-hidden bg-pine-deep text-white">
+      <img src="/images/sawah-mountain-2.webp" loading="lazy" alt="Suasana pagi di sawah dan cottage kayu Rancabango"
+        class="absolute inset-0 h-full w-full object-cover opacity-70" />
+      <div class="absolute inset-0 bg-gradient-to-r from-pine-deep/85 via-pine-deep/45 to-transparent"></div>
+      <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 md:px-10">
+        <div class="max-w-[36rem]">
+          <p class="reveal forced-visible font-script text-3xl text-white/90 md:text-4xl"><T id="Kembali bersama" en="Together again" /></p>
+          <h2 class="reveal forced-visible mt-4 font-display text-[clamp(1.9rem,5vw,3.3rem)] font-bold leading-[1.12]">
+            <T id="Waktu yang pelan, untuk orang-orang yang kaurindukan" en="Slow time, for the people you've missed" />
+          </h2>
+          <p class="reveal forced-visible mt-5 text-lg leading-relaxed text-white/85">
+            <T id="Pagi menyusuri jembatan kayu, sore naik perahu di danau, malam berkumpul tanpa layar. Liburan keluarga yang meninggalkan kenangan, bukan sekadar foto."
+               en="Mornings across wooden bridges, afternoons on the lake, evenings together without screens. A family escape that leaves memories, not just photos." />
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 8 · SISI LAIN RANCABANGO (gallery) ===== -->
+    <section id="garut" class="bg-canvas px-6 py-24 md:px-10 md:py-36">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="max-w-[46ch]">
+          <p class="reveal font-script text-3xl text-teal"><T id="Sisi lain Rancabango" en="Another side of Rancabango" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Setiap sudut menyimpan ceritanya" en="Every corner holds its story" />
+          </h2>
+        </div>
+        <div class="reveal mt-12 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+          {gallery.map((g) => (
+            <figure class="overflow-hidden rounded-xl">
+              <img src={g.img} loading="lazy" alt={g.id} width="1200" height="1600"
+                class="aspect-[3/4] w-full object-cover transition duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.04]" />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 9 · PACKAGES (concept only, WA) ===== -->
+    <section id="packages" class="bg-mist px-6 py-24 md:px-10 md:py-32">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="max-w-[52ch]">
+          <p class="reveal font-script text-3xl text-teal"><T id="Untuk momen tertentu" en="For certain moments" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Paket yang bisa disesuaikan" en="Packages you can shape" />
+          </h2>
+          <p class="reveal mt-5 text-lg leading-relaxed text-ink-soft">
+            <T id="Beberapa cara menikmati Rancabango. Detail, harga, dan tanggal paling enak ditanyakan langsung."
+               en="A few ways to enjoy Rancabango. Details, prices, and dates are best asked directly." />
+          </p>
+        </div>
+        <div class="reveal mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {packages.map((p) => (
+            <article class="flex flex-col rounded-2xl border border-line bg-canvas p-6">
+              <h3 class="font-display text-lg font-bold text-ink"><T id={p.id} en={p.en} /></h3>
+              <p class="mt-2 flex-1 text-[14px] leading-relaxed text-ink-soft"><T id={p.descId} en={p.descEn} /></p>
+            </article>
+          ))}
+        </div>
+        <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa" class="group mt-8 inline-flex items-center gap-2 text-[15px] font-semibold text-teal">
+          <T id="Tanya paket lewat WhatsApp" en="Ask about packages on WhatsApp" />
+          <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== 10 · MOMENTS (Wedding & MICE) ===== -->
+    <section id="moments" class="bg-canvas px-6 py-24 md:px-10 md:py-32">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="max-w-[46ch]">
+          <p class="reveal font-script text-3xl text-teal"><T id="Momen untuk dirayakan" en="Moments to hold here" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Wedding, gathering, dan pertemuan" en="Weddings, gatherings, and meetings" />
+          </h2>
+        </div>
+        <div class="mt-12 grid gap-6 md:grid-cols-2">
+          <a href="/wedding" class="reveal group relative flex min-h-[26rem] items-end overflow-hidden rounded-2xl">
+            <img src="/images/wedding-arch.webp" loading="lazy" alt="Dekorasi pernikahan Rancabango: floral arch, kain putih, dan kursi kayu dengan latar gunung"
+              class="absolute inset-0 h-full w-full object-cover transition duration-[1400ms] group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-pine-deep/80 via-pine-deep/10 to-transparent"></div>
+            <div class="relative z-10 p-8">
+              <h3 class="font-display text-2xl font-bold text-white"><T id="Wedding" en="Weddings" /></h3>
+              <p class="mt-2 max-w-sm text-[15px] leading-relaxed text-white/85"><T id="Akad dan resepsi dengan latar sawah, gunung, dan gapura khas Bali." en="Ceremonies framed by rice fields, mountains, and a Balinese gate." /></p>
+              <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white"><T id="Selengkapnya" en="Learn more" /> <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span></span>
+            </div>
+          </a>
+          <a href="/meetings" class="reveal group relative flex min-h-[26rem] items-end overflow-hidden rounded-2xl">
+            <img src="/images/meeting-room.webp" loading="lazy" alt="Ajisaka Meeting Room untuk gathering dan MICE"
+              class="absolute inset-0 h-full w-full object-cover transition duration-[1400ms] group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-pine-deep/80 via-pine-deep/10 to-transparent"></div>
+            <div class="relative z-10 p-8">
+              <h3 class="font-display text-2xl font-bold text-white"><T id="Gathering & MICE" en="Gatherings & MICE" /></h3>
+              <p class="mt-2 max-w-sm text-[15px] leading-relaxed text-white/85"><T id="Ajisaka Meeting Room hingga 120 pax untuk retreat, seminar, dan team building." en="Ajisaka Meeting Room for up to 120 for retreats, seminars, and team building." /></p>
+              <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white"><T id="Selengkapnya" en="Learn more" /> <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 10.5 · REVIEWS (real Google reviews) ===== -->
+    <section id="reviews" class="bg-pine-deep px-6 py-24 text-cream md:px-10 md:py-32">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="reveal font-script text-3xl text-gold"><T id="Kata tamu" en="What guests say" /></p>
+            <h2 class="reveal mt-3 font-display text-[clamp(1.8rem,4.5vw,2.8rem)] font-bold leading-[1.12] text-white">
+              <T id="Alasan mereka kembali" en="Why they come back" />
+            </h2>
+          </div>
+          <div class="reveal flex items-center gap-3">
+            <span class="font-display text-4xl font-bold text-white">{REVIEWS.rating}</span>
+            <div>
+              <span class="flex text-gold" aria-hidden="true">
+                {Array.from({ length: 5 }).map(() => (<svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 20.5l1.4-6.8L2.2 9l6.9-.7z"/></svg>))}
+              </span>
+              <span class="text-sm text-cream/70"><T id={`${REVIEWS.count.toLocaleString("en").replace(/,/g,".")} ulasan · Google`} en={`${REVIEWS.count.toLocaleString("en").replace(/,/g,".")} reviews · Google`} /></span>
+            </div>
+          </div>
+        </div>
+        <div class="reveal mt-12 grid gap-6 md:grid-cols-3">
+          {REVIEWS.items.map((rv) => (
+            <figure class="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+              <span class="flex text-gold" aria-hidden="true">
+                {Array.from({ length: rv.stars }).map(() => (<svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 20.5l1.4-6.8L2.2 9l6.9-.7z"/></svg>))}
+              </span>
+              <blockquote class="mt-4 flex-1 text-[15px] leading-relaxed text-cream/90">"{rv.text}"</blockquote>
+              <figcaption class="mt-5 text-sm font-semibold text-white">{rv.name} <span class="font-normal text-cream/50">· Google</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 11 · INFO + MAP ===== -->
+    <section id="info" class="bg-mist px-6 py-24 md:px-10 md:py-32">
+      <div class="mx-auto grid max-w-[1280px] gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <p class="reveal font-script text-3xl text-teal"><T id="Sebelum berangkat" en="Before you set off" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,2.8rem)] font-bold leading-[1.12] text-ink">
+            <T id="Yang perlu kamu tahu" en="What you'll want to know" />
+          </h2>
+          <dl class="reveal mt-8 divide-y divide-line border-y border-line">
+            {info.map((it) => (
+              <div class="grid grid-cols-[9rem_1fr] gap-4 py-4 md:grid-cols-[11rem_1fr]">
+                <dt class="text-sm font-semibold text-ink"><T id={it.label.id} en={it.label.en} /></dt>
+                <dd class="text-sm leading-relaxed text-ink-soft"><T id={it.value.id} en={it.value.en} /></dd>
+              </div>
+            ))}
+          </dl>
+          <a href={MAPS_URL} target="_blank" rel="noopener" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-teal">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.3-7-11a7 7 0 1 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <T id="Buka di Google Maps" en="Open in Google Maps" />
+          </a>
+        </div>
+        <div class="reveal overflow-hidden rounded-2xl border border-line">
+          <iframe src={MAPS_EMBED} title="Peta Rancabango Hotel & Resort, Garut" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" class="h-full min-h-[22rem] w-full" style="border:0"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 12 · FAQ (GEO/AEO + pra-booking) ===== -->
+    <section id="faq" class="bg-canvas px-6 py-24 md:px-10 md:py-32">
+      <div class="mx-auto max-w-[820px]">
+        <p class="reveal font-script text-3xl text-teal"><T id="Sebelum kamu datang" en="Before you come" /></p>
+        <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,2.8rem)] font-bold leading-[1.14] text-ink">
+          <T id="Pertanyaan yang sering muncul" en="Questions people often ask" />
+        </h2>
+        <div class="reveal mt-10 divide-y divide-line border-y border-line">
+          {faq.map((f) => (
+            <details class="group py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 text-[15px] font-normal text-ink marker:content-['']">
+                <span><T id={f.qId} en={f.qEn} /></span>
+                <svg class="h-4 w-4 shrink-0 text-teal transition-transform duration-300 group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </summary>
+              <p class="mt-2.5 max-w-[68ch] text-sm leading-relaxed text-ink-soft">
+                <T id={f.aId} en={f.aEn} />
+              </p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 13 · THE INVITATION (soft close) ===== -->
+    <section id="contact" class="relative flex min-h-[80vh] items-center overflow-hidden bg-pine-deep text-white">
+      <img src="/images/koi-pond.webp" loading="lazy" alt="Kolam ikan dan jembatan kayu Rancabango saat pagi"
+        class="absolute inset-0 h-full w-full object-cover opacity-45" />
+      <div class="absolute inset-0 bg-pine-deep/55"></div>
+      <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 text-center md:px-10">
+        <p class="reveal forced-visible mx-auto max-w-3xl font-script text-[clamp(2rem,6vw,4rem)] leading-[1.08] text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.4)]">
+          <T id="Barangkali, tempatmu untuk berhenti sejenak sudah menunggu di kaki gunung."
+             en="Perhaps the place for you to pause is already waiting at the foot of the mountain." />
+        </p>
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <a href={BOOKING_URL} target="_blank" rel="noopener" data-fb="reservasi" class="rounded-full bg-white px-8 py-4 font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
+            <T id="Cek tanggal & harga" en="Check dates & rates" />
+          </a>
+          <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa" class="rounded-full border border-white/50 px-8 py-4 font-semibold text-white transition hover:bg-white/10">
+            <T id="Sapa kami di WhatsApp" en="Say hello on WhatsApp" />
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <BookBar />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+</Base>

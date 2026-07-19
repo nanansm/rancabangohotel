@@ -1,0 +1,7 @@
+---
+// Bilingual inline text. Renders both languages; CSS shows the active one
+// based on [data-lang] on <html>. Keeps a single URL, toggle is instant.
+interface Props { id: string; en: string; }
+const { id, en } = Astro.props;
+---
+<span data-t="id">{id}</span><span data-t="en">{en}</span>

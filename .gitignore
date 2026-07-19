@@ -1,0 +1,20 @@
+# build output
+dist/
+.astro/
+
+# deps
+node_modules/
+
+# env
+.env
+.env.production
+
+# macOS
+.DS_Store
+
+# logs
+npm-debug.log*
+
+# dev scratch (IG refs, proof)
+reference/
+assets-source/

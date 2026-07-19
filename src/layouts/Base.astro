@@ -1,0 +1,158 @@
+---
+import "../styles/global.css";
+import { BOOKING_URL, PHONE, MAPS_URL, IG_URL, TIKTOK_URL, REVIEWS } from "../data/content";
+
+const SITE = "https://rancabangohotel.com";
+interface Props { title?: string; description?: string; path?: string; }
+const {
+  title = "Hotel Garut Nuansa Bali — Rancabango Hotel & Resort, View Gunung Guntur",
+  description = "Hotel & resort nuansa Bali di Garut, di kaki Gunung Guntur. Cottage kayu, kolam ikan, restoran tepi danau, venue wedding & meeting room. Booking langsung — A Place To Be Present.",
+  path = "/",
+} = Astro.props;
+const canonical = SITE + path;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["Hotel", "Resort", "LocalBusiness"],
+  name: "Rancabango Hotel & Resort",
+  description,
+  url: SITE,
+  telephone: PHONE,
+  image: [
+    `${SITE}/images/aerial-1.webp`,
+    `${SITE}/images/sawah-mountain-1.webp`,
+    `${SITE}/images/koi-pond.webp`,
+  ],
+  priceRange: "$$",
+  currenciesAccepted: "IDR",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Jl. Rancabango KM 2, Tarogong Kaler",
+    addressLocality: "Garut",
+    addressRegion: "Jawa Barat",
+    postalCode: "44151",
+    addressCountry: "ID",
+  },
+  areaServed: "Garut, Jawa Barat",
+  starRating: { "@type": "Rating", ratingValue: "3" },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: REVIEWS.rating,
+    reviewCount: REVIEWS.count,
+    bestRating: "5",
+  },
+  amenityFeature: [
+    { "@type": "LocationFeatureSpecification", name: "Swimming Pool", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Restaurant", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Meeting Room", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Wedding Venue", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Mountain View", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Free Parking", value: true },
+  ],
+  hasMap: MAPS_URL,
+  sameAs: [IG_URL, TIKTOK_URL],
+  potentialAction: {
+    "@type": "ReserveAction",
+    target: BOOKING_URL,
+  },
+};
+---
+<!doctype html>
+<html lang="id" data-lang="id" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="hotel garut, hotel garut nuansa bali, resort garut, penginapan garut, hotel view gunung guntur, staycation garut, wedding venue garut, meeting room garut, rancabango hotel" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="Rancabango Hotel & Resort" />
+    <meta name="geo.region" content="ID-JB" />
+    <meta name="geo.placename" content="Garut, Jawa Barat" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="business.business" />
+    <meta property="og:site_name" content="Rancabango Hotel & Resort" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={SITE + "/images/aerial-1.webp"} />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1080" />
+    <meta property="og:image:alt" content="Rancabango Hotel & Resort dari udara — sawah, kolam, dan Gunung Guntur, Garut" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={SITE + "/images/aerial-1.webp"} />
+    <meta name="theme-color" content="#16261d" />
+    <link rel="preload" href="/fonts/PublicSans.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="https://be.dip.id" />
+    <link rel="preconnect" href="https://connect.facebook.net" />
+    <link rel="icon" href="/logo/logo-mark-white.webp" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <!-- Meta Pixel -->
+    <script is:inline>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1759496824642660');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1759496824642660&ev=PageView&noscript=1" alt="" /></noscript>
+    <!-- End Meta Pixel -->
+  </head>
+  <body>
+    <slot />
+    <script is:inline>
+      document.documentElement.classList.remove("no-js");
+      document.documentElement.classList.add("js");
+      // Instant language toggle, persisted.
+      (function () {
+        const KEY = "rbg-lang";
+        const saved = localStorage.getItem(KEY);
+        if (saved) document.documentElement.setAttribute("data-lang", saved);
+        window.__setLang = function (l) {
+          document.documentElement.setAttribute("data-lang", l);
+          document.documentElement.setAttribute("lang", l);
+          localStorage.setItem(KEY, l);
+          document.querySelectorAll("[data-lang-btn]").forEach((b) => {
+            b.setAttribute("aria-pressed", b.dataset.langBtn === l ? "true" : "false");
+          });
+        };
+      })();
+      // Reveal-on-scroll — motion enhancement only. A safety timeout forces
+      // every reveal visible so content can never stay hidden (headless / IO failure).
+      (function () {
+        const els = document.querySelectorAll(".reveal");
+        const showAll = () => els.forEach((el) => el.classList.add("is-in"));
+        if (!("IntersectionObserver" in window)) { showAll(); return; }
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+          });
+        }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+        setTimeout(showAll, 2600); // failsafe: never leave content hidden
+      })();
+      // Meta Pixel event proxies — booking selesai di DIP (domain lain), jadi
+      // klik Reservasi/WA/OTA dijadikan sinyal konversi yang bisa dioptimasi.
+      (function () {
+        if (typeof window.fbq !== "function") return;
+        document.addEventListener("click", function (e) {
+          const a = e.target.closest("[data-fb]");
+          if (!a) return;
+          const t = a.getAttribute("data-fb");
+          if (t === "reservasi") fbq("track", "InitiateCheckout");
+          else if (t === "wa") fbq("track", "Contact");
+          else if (t === "ota") fbq("trackCustom", "ClickOTA", { platform: a.getAttribute("data-ota") || "" });
+        }, true);
+      })();
+    </script>
+  </body>
+</html>

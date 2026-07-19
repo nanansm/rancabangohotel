@@ -1,0 +1,117 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BookBar from "../components/BookBar.astro";
+import T from "../components/T.astro";
+import { rooms, roomFacilities, BOOKING_URL, WA_URL, PRICE_FROM, PRICE_DEAL } from "../data/content";
+const rp = (n: number) => "Rp " + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+---
+<Base
+  path="/rooms/"
+  title="Kamar & Cottage — Rancabango Hotel & Resort Garut"
+  description="Delapan tipe kamar dan cottage kayu nuansa Bali di Rancabango Hotel & Resort Garut — mulai Rp 1.150.000/malam, termasuk sarapan. Booking langsung pakai kode RCB2026, hemat sampai 20%.">
+  <Header />
+  <main id="top">
+
+    <!-- ===== HERO ===== -->
+    <section class="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden bg-pine-deep">
+      <picture>
+        <source media="(min-width:768px)" srcset="/images/aerial-1.webp" />
+        <img src="/images/cottages-blue.webp" alt="Cottage kayu Rancabango dengan pemandangan gunung dan taman"
+          class="kenburns absolute inset-0 h-full w-full object-cover object-[center_50%]" fetchpriority="high" width="2200" height="1238" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-pine-deep/92 via-pine-deep/25 to-pine-deep/50"></div>
+      <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 pb-16 md:px-10 md:pb-24">
+        <div class="flex items-center gap-2.5 text-sm tracking-wide text-white/85 [text-shadow:0_1px_10px_rgba(0,0,0,0.4)]">
+          <img src="/logo/bird-white.webp" alt="" width="30" height="20" class="h-5 w-auto opacity-90" />
+          Rancabango Hotel · Garut
+        </div>
+        <p class="mt-6 font-script text-[clamp(1.9rem,6vw,2.9rem)] leading-none text-gold [text-shadow:0_2px_16px_rgba(0,0,0,0.45)]">
+          <T id="Tempat menginap" en="Where you'll stay" />
+        </p>
+        <h1 class="mt-3 max-w-[16ch] font-display text-[clamp(2rem,6.4vw,3.7rem)] font-bold leading-[1.06] text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]">
+          <T id="Kamar & Cottage" en="Rooms & Cottages" />
+        </h1>
+        <p class="mt-5 max-w-[48ch] text-lg leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+          <T id="Delapan tipe, dari kamar hangat untuk berdua sampai villa kayu untuk keluarga besar — masing-masing dengan ketenangannya sendiri."
+             en="Eight types, from a warm room for two to a wooden villa for the whole family — each with a calm of its own." />
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={BOOKING_URL} target="_blank" rel="noopener" data-fb="reservasi"
+             class="rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
+            <T id="Cek tanggal & harga" en="Check dates & rates" />
+          </a>
+          <a href="#kamar" class="rounded-full border border-white/50 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
+            <T id="Lihat semua tipe" en="See all types" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRICE ANCHOR + FACILITIES ===== -->
+    <section class="bg-canvas px-6 py-16 md:px-10 md:py-20">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-2xl border border-teal/20 bg-mist px-6 py-5">
+          <span class="text-sm text-ink-soft"><T id="Menginap mulai" en="Stays from" /></span>
+          <span class="text-base font-medium text-ink-soft opacity-60 line-through">{rp(PRICE_FROM)}</span>
+          <span class="font-display text-2xl font-bold text-teal md:text-3xl">{rp(PRICE_DEAL)}<span class="text-base font-medium text-ink-soft"> / <T id="malam" en="night" /></span></span>
+          <span class="text-sm text-ink-soft"><T id="— pakai kode RCB2026 saat booking langsung" en="— use code RCB2026 when you book direct" /></span>
+        </div>
+        <div class="mt-8">
+          <p class="text-sm font-semibold uppercase tracking-wide text-ink-soft"><T id="Setiap kamar dilengkapi" en="Every room includes" /></p>
+          <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-soft">
+            {roomFacilities.map((f) => (
+              <li class="flex items-center gap-2">
+                <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                <T id={f.id} en={f.en} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ROOMS GRID ===== -->
+    <section id="kamar" class="bg-canvas px-6 pb-24 md:px-10 md:pb-32">
+      <div class="mx-auto grid max-w-[1280px] gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {rooms.map((r) => (
+          <article class="group flex flex-col overflow-hidden rounded-2xl bg-mist shadow-[0_1px_0_rgba(0,0,0,0.04)] transition hover:shadow-lg">
+            <div class="overflow-hidden">
+              <img src={r.img} alt={`Kamar ${r.name} — Rancabango Hotel & Resort`} loading="lazy" width="1400" height="900"
+                class="aspect-[4/3] w-full object-cover transition duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]" />
+            </div>
+            <div class="flex flex-1 flex-col p-6">
+              <div class="flex items-start justify-between gap-3">
+                <h2 class="font-display text-xl font-bold tracking-tight text-ink">{r.name}</h2>
+                <span class="mt-1 flex shrink-0 items-center gap-1 text-xs text-ink-soft">
+                  <svg class="h-3.5 w-3.5 text-teal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9"/></svg>
+                  {r.guests}
+                </span>
+              </div>
+              <p class="mt-2 flex-1 text-[15px] leading-relaxed text-ink-soft"><T id={r.id} en={r.en} /></p>
+              <div class="mt-5 flex items-center justify-between gap-3 border-t border-line pt-4">
+                <span class="whitespace-nowrap font-display text-lg font-bold text-teal">{rp(r.price)}<span class="text-xs font-normal text-ink-soft">/<T id="malam" en="night" /></span></span>
+                <a href={BOOKING_URL} target="_blank" rel="noopener" data-fb="reservasi"
+                   class="shrink-0 rounded-full bg-teal px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-deep">
+                  <T id="Cek tanggal" en="Check dates" />
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="mx-auto mt-14 max-w-[1280px] overflow-hidden rounded-3xl bg-pine-deep px-8 py-14 text-center text-white md:py-16">
+        <p class="reveal font-script text-2xl text-gold md:text-3xl"><T id="Masih menimbang?" en="Still deciding?" /></p>
+        <h2 class="reveal mt-3 font-display text-[clamp(1.6rem,4vw,2.6rem)] font-bold leading-[1.14]"><T id="Tanya ketersediaan langsung ke kami" en="Ask us about availability directly" /></h2>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a href={BOOKING_URL} target="_blank" rel="noopener" data-fb="reservasi" class="rounded-full bg-white px-7 py-3.5 font-semibold text-pine-deep transition hover:bg-white/90"><T id="Cek tanggal & harga" en="Check dates & rates" /></a>
+          <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa" class="rounded-full border border-white/50 px-7 py-3.5 font-semibold text-white transition hover:bg-white/10"><T id="Tanya via WhatsApp" en="Ask via WhatsApp" /></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <BookBar />
+</Base>

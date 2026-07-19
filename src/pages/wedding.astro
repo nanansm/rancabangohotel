@@ -1,0 +1,148 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BookBar from "../components/BookBar.astro";
+import T from "../components/T.astro";
+import { wedding, WA_URL } from "../data/content";
+---
+<Base
+  path="/wedding/"
+  title="Wedding Venue di Garut — Rancabango Hotel & Resort"
+  description="Menikah di Rancabango Hotel: gapura khas Bali, latar sawah dan Gunung Guntur, katering Arummanis, dan ruang outdoor Bali View & Plaza. Wedding venue nuansa Bali di Garut.">
+  <Header />
+  <main id="top">
+
+    <!-- ===== HERO ===== -->
+    <section class="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden bg-pine-deep">
+      <picture>
+        <source media="(min-width:768px)" srcset="/images/wedding-hall-2.webp" />
+        <img src="/images/wedding-p3.webp" alt="Pelaminan pernikahan Rancabango: floral arch putih dengan latar Gunung Guntur"
+          class="kenburns absolute inset-0 h-full w-full object-cover object-[center_42%]" fetchpriority="high" width="1800" height="1200" />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-pine-deep/92 via-pine-deep/25 to-pine-deep/50"></div>
+      <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 pb-16 md:px-10 md:pb-24">
+        <div class="flex items-center gap-2.5 text-sm tracking-wide text-white/85 [text-shadow:0_1px_10px_rgba(0,0,0,0.4)]">
+          <img src="/logo/bird-white.webp" alt="" width="30" height="20" class="h-5 w-auto opacity-90" />
+          Rancabango Hotel · Garut
+        </div>
+        <p class="mt-6 font-script text-[clamp(1.9rem,6vw,2.9rem)] leading-none text-gold [text-shadow:0_2px_16px_rgba(0,0,0,0.45)]">
+          <T id="Hari yang kaukenang" en="A day to remember" />
+        </p>
+        <h1 class="mt-3 max-w-[16ch] font-display text-[clamp(2rem,6.4vw,3.7rem)] font-bold leading-[1.06] text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]">
+          <T id="Menikah di Rancabango Hotel" en="Get married at Rancabango Hotel" />
+        </h1>
+        <p class="mt-5 max-w-[46ch] text-lg leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+          <T id={wedding.intro.id} en={wedding.intro.en} />
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa"
+             class="rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
+            <T id="Konsultasi wedding via WhatsApp" en="Wedding enquiry on WhatsApp" />
+          </a>
+          <a href="#galeri" class="rounded-full border border-white/50 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
+            <T id="Lihat galeri" en="See the gallery" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== INTRO STATEMENT ===== -->
+    <section class="bg-canvas px-6 py-24 md:px-10 md:py-32">
+      <div class="mx-auto max-w-[1000px]">
+        <p class="reveal font-script text-3xl text-teal md:text-4xl"><T id="Yang membuatnya istimewa" en="What makes it special" /></p>
+        <h2 class="reveal mt-6 max-w-[20ch] font-display text-[clamp(1.9rem,5vw,3.2rem)] font-bold leading-[1.12] text-ink">
+          <T id="Alam sebagai dekorasi, Bali sebagai nadanya" en="Nature as décor, Bali as the tone" />
+        </h2>
+        <p class="reveal mt-6 max-w-[60ch] text-lg leading-relaxed text-ink-soft">
+          <T id="Tak perlu banyak hiasan ketika latarnya sudah sawah, gunung, dan langit terbuka. Rancabango memberi ruang untuk akad dan resepsi yang tenang — dengan sentuhan khas Bali yang sudah menyatu di setiap sudut."
+             en="You need little decoration when the backdrop is already rice fields, mountains, and open sky. Rancabango gives room for a calm ceremony and reception — with a Balinese touch that's already woven into every corner." />
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== FEATURE BAND 1 (image + text) ===== -->
+    <section class="overflow-hidden bg-mist">
+      <div class="mx-auto grid max-w-[1400px] items-center gap-0 lg:grid-cols-2">
+        <div class="order-1">
+          <img src="/images/wedding-gapura.webp" loading="lazy"
+            alt="Gapura batu merah khas Bali di Rancabango, dibingkai taman dan barisan gunung"
+            class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full lg:min-h-[36rem]" />
+        </div>
+        <div class="order-2 px-6 py-16 md:px-14 md:py-24">
+          <h3 class="reveal font-display text-[clamp(1.6rem,3.6vw,2.4rem)] font-bold leading-[1.14] text-ink">
+            <T id="Gapura khas Bali & latar alam" en="A Balinese gate, framed by nature" />
+          </h3>
+          <p class="reveal mt-5 max-w-[48ch] text-lg leading-relaxed text-ink-soft">
+            <T id="Titik akad yang ikonik: gapura batu merah khas Bali, dibingkai taman, sawah, dan barisan gunung. Panorama alam menjadi dekorasi yang hidup sepanjang acara — tanpa perlu ditambah-tambahi."
+               en="An iconic ceremony spot: a red-stone Balinese gate framed by gardens, rice fields, and mountains. The scenery becomes living décor throughout the day — nothing more needed." />
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FEATURE BAND 2 (text + image, reversed) ===== -->
+    <section class="overflow-hidden bg-canvas">
+      <div class="mx-auto grid max-w-[1400px] items-center gap-0 lg:grid-cols-2">
+        <div class="order-2 px-6 py-16 md:px-14 md:py-24 lg:order-1">
+          <h3 class="reveal font-display text-[clamp(1.6rem,3.6vw,2.4rem)] font-bold leading-[1.14] text-ink">
+            <T id="Katering, venue, dan tim di satu tempat" en="Catering, venue, and team in one place" />
+          </h3>
+          <p class="reveal mt-5 max-w-[48ch] text-lg leading-relaxed text-ink-soft">
+            <T id="Hidangan Asia dan internasional langsung dari dapur Arummanis Restaurant. Ruang outdoor Bali View & Plaza yang lapang untuk akad, resepsi, hingga pesta kebun. Semua ditangani satu tim, di satu lokasi."
+               en="Asian and international dishes straight from the Arummanis kitchen. The spacious Bali View & Plaza outdoor space for ceremony, reception, and garden parties. All handled by one team, in one location." />
+          </p>
+          <ul class="reveal mt-7 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+            {wedding.features.map((f) => (
+              <li class="flex items-start gap-2.5 text-[15px] text-ink">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                <T id={f.id} en={f.en} />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="order-1 lg:order-2">
+          <img src="/images/wedding-hall-1.webp" loading="lazy"
+            alt="Dekorasi resepsi Rancabango: kain putih, floral, dan kursi kayu di taman"
+            class="aspect-[4/3] w-full object-cover lg:aspect-auto lg:h-full lg:min-h-[36rem]" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GALLERY (masonry, real photos, no crop) ===== -->
+    <section id="galeri" class="bg-mist px-6 py-24 md:px-10 md:py-32">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="max-w-[46ch]">
+          <p class="reveal font-script text-3xl text-teal"><T id="Sudah terjadi di sini" en="Held here already" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Momen yang pernah dirayakan" en="Moments already celebrated" />
+          </h2>
+        </div>
+        <div class="reveal mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
+          {wedding.gallery.map((img) => (
+            <figure class="group block break-inside-avoid overflow-hidden rounded-2xl">
+              <img src={img} loading="lazy" alt="Dekorasi dan suasana pernikahan di Rancabango Hotel & Resort"
+                class="block w-full transition duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]" />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="relative flex min-h-[64vh] items-center overflow-hidden bg-pine-deep text-white">
+      <img src="/images/wedding-hall-1.webp" loading="lazy" alt="Suasana resepsi Rancabango di tepi taman" class="absolute inset-0 h-full w-full object-cover opacity-35" />
+      <div class="absolute inset-0 bg-pine-deep/55"></div>
+      <div class="relative z-10 mx-auto w-full max-w-[900px] px-6 text-center md:px-10">
+        <p class="reveal forced-visible font-script text-[clamp(1.9rem,5vw,3rem)] leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.4)]">
+          <T id="Ceritakan rencana harimu, kami bantu wujudkan." en="Tell us your plans, and we'll help make them real." />
+        </p>
+        <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa" class="mt-8 inline-block rounded-full bg-white px-8 py-4 font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
+          <T id="Konsultasi wedding via WhatsApp" en="Wedding enquiry on WhatsApp" />
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <BookBar />
+</Base>
