@@ -36,23 +36,27 @@ export const nav = [
 
 // 8 tipe kamar — nama resmi rate card. Harga = publish rate ("mulai dari"),
 // aman: rack tertinggi, ops mustahil underquote; DIP jual lebih murah.
-// (⚠ foto Superior/Studio/Villa sementara — menunggu foto dedikasi klien.)
+// Foto: shoot dedikasi klien (Google Drive per-tipe), sudah divalidasi + auto-orient.
+// `img` = foto hero (kartu/homepage); `images` = galeri lightbox di /rooms.
+// Deluxe Balcony + 1 foto Cigintung dari web lama (folder Drive-nya masih kosong).
+const roomImg = (slug: string, n: number) =>
+  Array.from({ length: n }, (_, i) => `/images/rooms/${slug}-${String(i + 1).padStart(2, "0")}.webp`);
 export const rooms = [
-  { name: "Superior", img: "/images/room-hd-superior.webp", price: 1150000, guests: 2,
+  { name: "Superior", slug: "superior", images: roomImg("superior", 5), img: roomImg("superior", 5)[0], price: 1150000, guests: 2,
     id: "Kamar hangat untuk berdua, ketenangan yang sederhana.", en: "A warm room for two, simple calm." },
-  { name: "Studio Room", img: "/images/room-hd-studio.webp", price: 1250000, guests: 2,
+  { name: "Studio Room", slug: "studio", images: roomImg("studio", 4), img: roomImg("studio", 4)[0], price: 1250000, guests: 2,
     id: "Ruang lapang dengan sentuhan kayu.", en: "An open room with a wooden touch." },
-  { name: "Deluxe Garden", img: "/images/room-hd-deluxe-garden.webp", price: 1350000, guests: 2,
+  { name: "Deluxe Garden", slug: "deluxe-garden", images: roomImg("deluxe-garden", 6), img: roomImg("deluxe-garden", 6)[0], price: 1350000, guests: 2,
     id: "Jendela lebar membuka ke taman hijau.", en: "A wide window onto the green garden." },
-  { name: "Deluxe Balcony", img: "/images/room-hd-deluxe-balcony.webp", price: 1450000, guests: 2,
+  { name: "Deluxe Balcony", slug: "deluxe-balcony", images: roomImg("deluxe-balcony", 6), img: roomImg("deluxe-balcony", 6)[0], price: 1450000, guests: 2,
     id: "Balkon pribadi, pagi ditemani daun dan cahaya.", en: "A private balcony, mornings of leaves and light." },
-  { name: "Bungalow Cigintung", img: "/images/cottages-blue.webp", price: 1500000, guests: 2,
+  { name: "Bungalow Cigintung", slug: "cigintung", images: roomImg("cigintung", 3), img: roomImg("cigintung", 3)[0], price: 1500000, guests: 2,
     id: "Cottage yang menyatu dengan taman, tenang seperti seharusnya.", en: "A cottage woven into the garden, quiet as it should be." },
-  { name: "Bungalow Suite Guntur", img: "/images/room-suite-guntur.webp", price: 3000000, guests: 4,
+  { name: "Bungalow Suite Guntur", slug: "suite-guntur", images: roomImg("suite-guntur", 7), img: roomImg("suite-guntur", 7)[0], price: 3000000, guests: 4,
     id: "Dua lantai kayu dan loft, ruang untuk berkumpul.", en: "Two wooden floors and a loft, room to gather." },
-  { name: "Bungalow Guntur", img: "/images/room-bungalow-guntur.webp", price: 3500000, guests: 2,
+  { name: "Bungalow Guntur", slug: "bungalow-guntur", images: roomImg("bungalow-guntur", 8), img: roomImg("bungalow-guntur", 8)[0], price: 3500000, guests: 2,
     id: "Cottage kayu hangat, gunung dari balik jendela.", en: "A warm wooden cottage, mountains beyond the window." },
-  { name: "Villa Rancabango", img: "/images/room-hd-villa.webp", price: 7500000, guests: 6,
+  { name: "Villa Rancabango", slug: "villa", images: roomImg("villa", 9), img: roomImg("villa", 9)[0], price: 7500000, guests: 6,
     id: "Villa kayu paling luas, sebuah dunia kecil sendiri.", en: "The largest wooden villa, a small world of its own." },
 ];
 
