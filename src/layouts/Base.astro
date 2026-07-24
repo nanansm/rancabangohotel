@@ -3,11 +3,13 @@ import "../styles/global.css";
 import { BOOKING_URL, PHONE, MAPS_URL, IG_URL, TIKTOK_URL, REVIEWS } from "../data/content";
 
 const SITE = "https://rancabangohotel.com";
-interface Props { title?: string; description?: string; path?: string; }
+interface Props { title?: string; description?: string; path?: string; heroImg?: string; heroImgWide?: string; }
 const {
   title = "Hotel Garut Nuansa Bali — Rancabango Hotel & Resort, View Gunung Guntur",
   description = "Hotel & resort nuansa Bali di Garut, di kaki Gunung Guntur. Cottage kayu, kolam ikan, restoran tepi danau, venue wedding & meeting room. Booking langsung — A Place To Be Present.",
   path = "/",
+  heroImg,
+  heroImgWide,
 } = Astro.props;
 const canonical = SITE + path;
 
@@ -86,6 +88,8 @@ const jsonLd = {
     <meta name="twitter:image" content={SITE + "/images/aerial-1.webp"} />
     <meta name="theme-color" content="#16261d" />
     <link rel="preload" href="/fonts/PublicSans.woff2" as="font" type="font/woff2" crossorigin />
+    {heroImg && <link rel="preload" as="image" href={heroImg} media="(max-width: 767px)" fetchpriority="high" />}
+    {heroImgWide && <link rel="preload" as="image" href={heroImgWide} media="(min-width: 768px)" fetchpriority="high" />}
     <link rel="preconnect" href="https://be.dip.id" />
     <link rel="preconnect" href="https://connect.facebook.net" />
     <link rel="icon" href="/logo/logo-mark-white.webp" />
