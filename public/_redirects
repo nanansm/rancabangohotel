@@ -1,0 +1,29 @@
+# Redirect URL WordPress lama → halaman Astro baru (cutover domain 30 Jul 2026).
+# Sumber: wp-sitemap.xml situs lama (21 URL). Tujuan: jaga ranking Google,
+# jangan biarkan URL yang sudah terindeks jatuh ke 404.
+# Format Cloudflare Pages: <dari>  <ke>  <status>
+
+# --- Halaman utama yang ada padanannya langsung ---
+/wedding            /wedding/       301
+/meeting-events     /meetings/      301
+/link               /link/          301
+
+# --- Kamar: 3 URL lama semua bermuara ke /rooms/ ---
+/room-type          /rooms/         301
+/gallery            /rooms/         301
+/project/*          /rooms/         301
+
+# --- Booking eksternal (DIP) — arahkan ke daftar kamar yang ada CTA reservasi ---
+/booking            /rooms/         301
+
+# --- Section di homepage ---
+/contact            /#contact       301
+/experience         /#experience    301
+/facilities         /#experience    301
+/special-offer      /#packages      301
+
+# --- Konten kadaluarsa / taksonomi sampah → homepage ---
+/ramadan                /   301
+/news/promo-tahun-baru  /   301
+/category/news          /   301
+/project_category/*     /   301
