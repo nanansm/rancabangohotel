@@ -1,29 +1,40 @@
 # Redirect URL WordPress lama → halaman Astro baru (cutover domain 30 Jul 2026).
 # Sumber: wp-sitemap.xml situs lama (21 URL). Tujuan: jaga ranking Google,
 # jangan biarkan URL yang sudah terindeks jatuh ke 404.
-# Format Cloudflare Pages: <dari>  <ke>  <status>
+#
+# Pakai splat (`*`) di ujung, BUKAN exact match — WordPress lama memakai
+# permalink ber-trailing-slash, jadi `/gallery` DAN `/gallery/` dua-duanya
+# harus kena. Exact match cuma nangkep yang tanpa slash.
+#
+# ⚠️ URUTAN PENTING: Cloudflare Pages memakai aturan yang cocok PERTAMA.
+# `/project_category*` wajib di atas `/project*`, kalau tidak taksonomi
+# ikut kelempar ke /rooms/.
+#
+# Format: <dari>  <ke>  <status>
 
-# --- Halaman utama yang ada padanannya langsung ---
-/wedding            /wedding/       301
-/meeting-events     /meetings/      301
-/link               /link/          301
+# --- Padanan langsung (halaman aslinya ada, jadi jangan pakai splat) ---
+/wedding             /wedding/       301
+/link                /link/          301
 
-# --- Kamar: 3 URL lama semua bermuara ke /rooms/ ---
-/room-type          /rooms/         301
-/gallery            /rooms/         301
-/project/*          /rooms/         301
+# --- Taksonomi WP: HARUS sebelum /project* ---
+/project_category*   /               301
 
-# --- Booking eksternal (DIP) — arahkan ke daftar kamar yang ada CTA reservasi ---
-/booking            /rooms/         301
+# --- Kamar: semua URL kamar lama bermuara ke /rooms/ ---
+/project*            /rooms/         301
+/room-type*          /rooms/         301
+/gallery*            /rooms/         301
+/booking*            /rooms/         301
+
+# --- MICE ---
+/meeting-events*     /meetings/      301
 
 # --- Section di homepage ---
-/contact            /#contact       301
-/experience         /#experience    301
-/facilities         /#experience    301
-/special-offer      /#packages      301
+/contact*            /#contact       301
+/experience*         /#experience    301
+/facilities*         /#experience    301
+/special-offer*      /#packages      301
 
-# --- Konten kadaluarsa / taksonomi sampah → homepage ---
-/ramadan                /   301
-/news/promo-tahun-baru  /   301
-/category/news          /   301
-/project_category/*     /   301
+# --- Konten kadaluarsa → homepage ---
+/ramadan*            /               301
+/news*               /               301
+/category*           /               301

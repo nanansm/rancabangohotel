@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import T from "../components/T.astro";
+---
+<Base
+  path="/404"
+  title="Halaman Tidak Ditemukan — Rancabango Hotel & Resort"
+  description="Halaman yang kamu cari tidak ditemukan. Kembali ke Rancabango Hotel & Resort — hotel & resort nuansa Bali di kaki Gunung Guntur, Garut.">
+  <Header />
+  <main id="top">
+
+    <!-- ===== 404 ===== -->
+    <section class="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-pine-deep px-6 py-28 text-center">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.06),transparent_65%)]"></div>
+
+      <div class="relative z-10 mx-auto flex max-w-[560px] flex-col items-center">
+        <p class="font-script text-[clamp(1.7rem,5.5vw,2.5rem)] leading-none text-gold [text-shadow:0_2px_16px_rgba(0,0,0,0.45)]">
+          <T id="Sebuah jeda" en="A pause" />
+        </p>
+        <p class="mt-5 font-display text-[clamp(4rem,16vw,7.5rem)] font-bold leading-none text-white/90">404</p>
+        <h1 class="mt-4 font-display text-[clamp(1.6rem,4.8vw,2.4rem)] font-bold leading-tight text-white">
+          <T id="Halaman tidak ditemukan" en="Page not found" />
+        </h1>
+        <p class="mt-5 max-w-[42ch] text-[15px] leading-relaxed text-white/75">
+          <T id="Sepertinya halaman ini sudah pindah atau belum ada. Mari kembali dan lanjutkan menjelajah Rancabango — A Place To Be Present."
+             en="This page seems to have moved, or never existed. Let's head back and keep exploring Rancabango — A Place To Be Present." />
+        </p>
+
+        <div class="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-center">
+          <a href="/" class="rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
+            <T id="Kembali ke Beranda" en="Back to Home" />
+          </a>
+          <a href="/rooms/" class="rounded-full border border-white/50 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
+            <T id="Lihat Kamar" en="See Rooms" />
+          </a>
+          <a href="/wedding/" class="rounded-full border border-white/50 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
+            <T id="Wedding" en="Wedding" />
+          </a>
+          <a href="/meetings/" class="rounded-full border border-white/50 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
+            <T id="Meeting & Event" en="Meetings & Events" />
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
