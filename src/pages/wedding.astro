@@ -4,12 +4,20 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BookBar from "../components/BookBar.astro";
 import T from "../components/T.astro";
-import { wedding, WA_URL } from "../data/content";
+import { wedding, weddingPackages, weddingFacilities, weddingMenuNote, waWedding, WA_WEDDING_URL } from "../data/content";
+
+// Format rupiah dengan titik ribuan tanpa bergantung ICU (samakan dengan index.astro).
+const rp = (n: number) => "Rp " + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const numId = (n: number) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const numEn = (n: number) => n.toLocaleString("en-US");
+const allInPackages = weddingPackages.filter((p) => p.unit === "total");
+const kateringPackages = weddingPackages.filter((p) => p.unit === "perPax");
 ---
 <Base
   path="/wedding/"
   title="Wedding Venue di Garut — Rancabango Hotel & Resort"
-  description="Menikah di Rancabango Hotel: gapura khas Bali, latar sawah dan Gunung Guntur, katering Arummanis, dan ruang outdoor Bali View & Plaza. Wedding venue nuansa Bali di Garut.">
+  description="Menikah di Rancabango Hotel: gapura khas Bali, latar sawah dan Gunung Guntur, katering Arummanis, dan ruang outdoor Bali View & Plaza. Wedding venue nuansa Bali di Garut."
+  heroImg="/images/wedding-hero-m.webp" heroImgWide="/images/wedding-hall-2.webp">
   <Header />
   <main id="top">
 
@@ -17,8 +25,8 @@ import { wedding, WA_URL } from "../data/content";
     <section class="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden bg-pine-deep">
       <picture>
         <source media="(min-width:768px)" srcset="/images/wedding-hall-2.webp" />
-        <img src="/images/wedding-p3.webp" alt="Pelaminan pernikahan Rancabango: floral arch putih dengan latar Gunung Guntur"
-          class="kenburns absolute inset-0 h-full w-full object-cover object-[center_42%]" fetchpriority="high" width="1800" height="1200" />
+        <img src="/images/wedding-hero-m.webp" alt="Pelaminan pernikahan Rancabango: floral arch putih dengan latar Gunung Guntur"
+          class="kenburns absolute inset-0 h-full w-full object-cover object-[center_42%]" fetchpriority="high" width="840" height="1191" />
       </picture>
       <div class="absolute inset-0 bg-gradient-to-t from-pine-deep/92 via-pine-deep/25 to-pine-deep/50"></div>
       <div class="relative z-10 mx-auto w-full max-w-[1280px] px-6 pb-16 md:px-10 md:pb-24">
@@ -36,12 +44,12 @@ import { wedding, WA_URL } from "../data/content";
           <T id={wedding.intro.id} en={wedding.intro.en} />
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa"
+          <a href={WA_WEDDING_URL} target="_blank" rel="noopener" data-fb="wa"
              class="rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
             <T id="Konsultasi wedding via WhatsApp" en="Wedding enquiry on WhatsApp" />
           </a>
-          <a href="#galeri" class="rounded-full border border-white/50 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
-            <T id="Lihat galeri" en="See the gallery" />
+          <a href="#paket" class="rounded-full border border-white/50 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">
+            <T id="Paket & harga" en="Packages & rates" />
           </a>
         </div>
       </div>
@@ -61,8 +69,136 @@ import { wedding, WA_URL } from "../data/content";
       </div>
     </section>
 
+    <!-- ===== PAKET WEDDING ===== -->
+    <section id="paket" class="scroll-mt-24 bg-mist px-6 py-24 pb-32 md:px-10 md:py-36 md:pb-40">
+      <!-- Sprite ikon dipakai lewat <use> di seluruh section ini — hindari nulis ulang path SVG di tiap kartu. -->
+      <svg width="0" height="0" class="hidden" aria-hidden="true">
+        <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></symbol>
+        <symbol id="i-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></symbol>
+      </svg>
+      <div class="mx-auto max-w-[1280px]">
+        <div class="max-w-[52ch]">
+          <p class="reveal font-script text-3xl text-teal"><T id="Untuk hari yang datang sekali" en="For the day that comes once" /></p>
+          <h2 class="reveal mt-4 font-display text-[clamp(1.8rem,4.5vw,3rem)] font-bold leading-[1.12] text-ink">
+            <T id="Ada dua cara merayakan, enam paket siap dipilih" en="Two ways to celebrate, six packages ready to choose" />
+          </h2>
+          <p class="reveal mt-5 text-lg leading-relaxed text-ink-soft">
+            <T id="All In: hotel urus dekorasi sampai hiburan, satu harga. Katering & Venue: kamu bawa vendor sendiri, hotel fokus di katering dan tempat."
+               en="All In: the hotel handles décor through entertainment, one price. Catering & Venue: bring your own vendors, the hotel focuses on catering and venue." />
+          </p>
+          <p class="reveal mt-3 text-sm text-ink-soft"><T id={weddingMenuNote.id} en={weddingMenuNote.en} /></p>
+        </div>
+
+        <h3 class="reveal mt-14 font-display text-xl font-bold text-ink"><T id="Paket All In" en="All In Packages" /></h3>
+        <div class="reveal mt-6 grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-[auto_auto_auto_1fr_auto_auto] md:gap-x-4 md:gap-y-0 lg:gap-x-6">
+          {allInPackages.map((pkg) => (
+            <article class="group flex flex-col overflow-hidden rounded-2xl bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.04)] transition hover:shadow-lg md:grid md:grid-rows-subgrid md:row-span-6 md:gap-0 md:p-6">
+              <div>
+                <h4 class="font-display text-base font-bold tracking-tight text-ink"><T id={pkg.name.id} en={pkg.name.en} /></h4>
+                <p class="mt-1 text-sm text-ink-soft"><T id={pkg.paxLabel.id} en={pkg.paxLabel.en} /></p>
+              </div>
+              <div class="mt-3 border-t border-line pt-3">
+                <span class="font-display text-2xl font-bold text-teal md:text-3xl">{rp(pkg.price)}</span>
+                <p class="mt-1 text-xs text-ink-soft">
+                  <T id={`≈ ${rp(Math.round(pkg.price / pkg.paxNum))} per tamu`} en={`≈ ${rp(Math.round(pkg.price / pkg.paxNum))} per guest`} />
+                </p>
+              </div>
+              <p class="mt-3 text-sm leading-relaxed text-ink-soft"><T id={pkg.tagline.id} en={pkg.tagline.en} /></p>
+              <ul class="mt-4 space-y-2 text-sm text-ink">
+                {pkg.highlights.map((h) => (
+                  <li class="flex items-start gap-2">
+                    <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal"><use href="#i-check"/></svg>
+                    <T id={h.id} en={h.en} />
+                  </li>
+                ))}
+              </ul>
+              <details class="group/d mt-4">
+                <summary class="flex min-h-[44px] cursor-pointer list-none items-center gap-1.5 text-sm font-semibold text-teal [&::-webkit-details-marker]:hidden">
+                  <T id="Lihat detail paket" en="See package details" />
+                  <svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-open/d:rotate-180"><use href="#i-chevron"/></svg>
+                </summary>
+                {pkg.groups.map((g) => (
+                  <div class="mt-3">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-ink"><T id={g.title.id} en={g.title.en} /></p>
+                    <ul class="mt-1.5 list-disc space-y-1 pl-5 text-sm leading-relaxed text-ink-soft marker:text-teal">
+                      {g.items.map((it) => (<li><T id={it.id} en={it.en} /></li>))}
+                    </ul>
+                  </div>
+                ))}
+              </details>
+              <a href={waWedding(pkg.name.id, pkg.paxLabel.id)} target="_blank" rel="noopener" data-fb="wa"
+                 class="mt-5 inline-flex items-center justify-center rounded-full bg-teal px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-teal-deep">
+                <T id="Tanya paket ini via WhatsApp" en="Ask about this package on WhatsApp" />
+              </a>
+            </article>
+          ))}
+        </div>
+
+        <h3 class="reveal mt-16 font-display text-xl font-bold text-ink"><T id="Paket Katering & Venue" en="Catering & Venue Packages" /></h3>
+        <div class="reveal mt-6 grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-[auto_auto_auto_1fr_auto_auto] md:gap-x-4 md:gap-y-0 lg:gap-x-6">
+          {kateringPackages.map((pkg) => (
+            <article class="group flex flex-col overflow-hidden rounded-2xl bg-canvas p-5 shadow-[0_1px_0_rgba(0,0,0,0.04)] transition hover:shadow-lg md:grid md:grid-rows-subgrid md:row-span-6 md:gap-0 md:p-6">
+              <div>
+                <h4 class="font-display text-base font-bold tracking-tight text-ink"><T id={pkg.name.id} en={pkg.name.en} /></h4>
+                <p class="mt-1 text-sm text-ink-soft"><T id={pkg.paxLabel.id} en={pkg.paxLabel.en} /></p>
+              </div>
+              <div class="mt-3 border-t border-line pt-3">
+                <span class="font-display text-2xl font-bold text-teal md:text-3xl">{rp(pkg.price)}<span class="text-sm font-medium text-ink-soft"> / <T id="tamu" en="guest" /></span></span>
+                <p class="mt-1 text-xs text-ink-soft">
+                  <T id={`≈ ${rp(pkg.price * pkg.paxNum)} untuk ${numId(pkg.paxNum)} tamu`} en={`≈ ${rp(pkg.price * pkg.paxNum)} for ${numEn(pkg.paxNum)} guests`} />
+                </p>
+                {pkg.note.id && <p class="mt-1 text-xs text-ink-soft"><T id={pkg.note.id} en={pkg.note.en} /></p>}
+              </div>
+              <p class="mt-3 text-sm leading-relaxed text-ink-soft"><T id={pkg.tagline.id} en={pkg.tagline.en} /></p>
+              <ul class="mt-4 space-y-2 text-sm text-ink">
+                {pkg.highlights.map((h) => (
+                  <li class="flex items-start gap-2">
+                    <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal"><use href="#i-check"/></svg>
+                    <T id={h.id} en={h.en} />
+                  </li>
+                ))}
+              </ul>
+              <details class="group/d mt-4">
+                <summary class="flex min-h-[44px] cursor-pointer list-none items-center gap-1.5 text-sm font-semibold text-teal [&::-webkit-details-marker]:hidden">
+                  <T id="Lihat detail paket" en="See package details" />
+                  <svg class="h-4 w-4 shrink-0 transition-transform duration-300 group-open/d:rotate-180"><use href="#i-chevron"/></svg>
+                </summary>
+                {pkg.groups.map((g) => (
+                  <div class="mt-3">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-ink"><T id={g.title.id} en={g.title.en} /></p>
+                    <ul class="mt-1.5 list-disc space-y-1 pl-5 text-sm leading-relaxed text-ink-soft marker:text-teal">
+                      {g.items.map((it) => (<li><T id={it.id} en={it.en} /></li>))}
+                    </ul>
+                  </div>
+                ))}
+              </details>
+              <a href={waWedding(pkg.name.id, pkg.paxLabel.id)} target="_blank" rel="noopener" data-fb="wa"
+                 class="mt-5 inline-flex items-center justify-center rounded-full bg-teal px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-teal-deep">
+                <T id="Tanya paket ini via WhatsApp" en="Ask about this package on WhatsApp" />
+              </a>
+            </article>
+          ))}
+        </div>
+
+        <p class="reveal mt-14 text-sm font-semibold text-ink"><T id="Yang selalu didapat" en="What every package includes" /></p>
+        <ul class="reveal mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-soft">
+          {weddingFacilities.map((f) => (
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 shrink-0 text-teal"><use href="#i-check"/></svg>
+              <T id={f.id} en={f.en} />
+            </li>
+          ))}
+        </ul>
+
+        <p class="reveal mt-8 max-w-[60ch] text-sm text-ink-soft">
+          <T id="Isi tiap paket bisa disesuaikan sesuai kebutuhan acara. Detail lengkap dan penyesuaian dibahas langsung lewat WhatsApp."
+             en="Each package's contents can be adjusted to fit your event. Full details and adjustments are discussed directly on WhatsApp." />
+        </p>
+      </div>
+    </section>
+
     <!-- ===== FEATURE BAND 1 (image + text) ===== -->
-    <section class="overflow-hidden bg-mist">
+    <section class="overflow-hidden bg-canvas">
       <div class="mx-auto grid max-w-[1400px] items-center gap-0 lg:grid-cols-2">
         <div class="order-1">
           <img src="/images/wedding-gapura.webp" loading="lazy"
@@ -82,7 +218,7 @@ import { wedding, WA_URL } from "../data/content";
     </section>
 
     <!-- ===== FEATURE BAND 2 (text + image, reversed) ===== -->
-    <section class="overflow-hidden bg-canvas">
+    <section class="overflow-hidden bg-mist">
       <div class="mx-auto grid max-w-[1400px] items-center gap-0 lg:grid-cols-2">
         <div class="order-2 px-6 py-16 md:px-14 md:py-24 lg:order-1">
           <h3 class="reveal font-display text-[clamp(1.6rem,3.6vw,2.4rem)] font-bold leading-[1.14] text-ink">
@@ -110,7 +246,7 @@ import { wedding, WA_URL } from "../data/content";
     </section>
 
     <!-- ===== GALLERY (masonry, real photos, no crop) ===== -->
-    <section id="galeri" class="bg-mist px-6 py-24 md:px-10 md:py-32">
+    <section id="galeri" class="bg-canvas px-6 py-24 md:px-10 md:py-32">
       <div class="mx-auto max-w-[1280px]">
         <div class="max-w-[46ch]">
           <p class="reveal font-script text-3xl text-teal"><T id="Sudah terjadi di sini" en="Held here already" /></p>
@@ -118,11 +254,14 @@ import { wedding, WA_URL } from "../data/content";
             <T id="Momen yang pernah dirayakan" en="Moments already celebrated" />
           </h2>
         </div>
-        <div class="reveal mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
-          {wedding.gallery.map((img) => (
-            <figure class="group block break-inside-avoid overflow-hidden rounded-2xl">
-              <img src={img} loading="lazy" alt="Dekorasi dan suasana pernikahan di Rancabango Hotel & Resort"
-                class="block w-full transition duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]" />
+        <div id="galeri-grid" data-gallery={JSON.stringify(wedding.gallery.map((g) => g.img))}
+          class="reveal mt-12 grid grid-cols-1 gap-4 pb-4 sm:grid-cols-2 sm:pb-0 lg:grid-cols-3">
+          {wedding.gallery.map((g, i) => (
+            <figure class="group block overflow-hidden rounded-2xl">
+              <button type="button" class="block w-full cursor-zoom-in" data-index={i} aria-label={`Lihat foto ${i + 1} dari ${wedding.gallery.length}`}>
+                <img src={g.img} width={g.w} height={g.h} loading="lazy" decoding="async" alt="Dekorasi dan suasana pernikahan di Rancabango Hotel & Resort"
+                  class="block w-full transition duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] sm:aspect-[4/5] sm:h-full sm:object-cover sm:object-center" />
+              </button>
             </figure>
           ))}
         </div>
@@ -137,12 +276,96 @@ import { wedding, WA_URL } from "../data/content";
         <p class="reveal forced-visible font-script text-[clamp(1.9rem,5vw,3rem)] leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.4)]">
           <T id="Ceritakan rencana harimu, kami bantu wujudkan." en="Tell us your plans, and we'll help make them real." />
         </p>
-        <a href={WA_URL} target="_blank" rel="noopener" data-fb="wa" class="mt-8 inline-block rounded-full bg-white px-8 py-4 font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
+        <a href={WA_WEDDING_URL} target="_blank" rel="noopener" data-fb="wa" class="mt-8 inline-block rounded-full bg-white px-8 py-4 font-semibold text-pine-deep shadow-lg transition hover:bg-white/90">
           <T id="Konsultasi wedding via WhatsApp" en="Wedding enquiry on WhatsApp" />
         </a>
       </div>
     </section>
+
+    <!-- ===== GALLERY LIGHTBOX (no autoplay, tiru pola rooms.astro) ===== -->
+    <div id="wedding-lightbox" class="fixed inset-0 z-[90] hidden" aria-modal="true" role="dialog" aria-label="Galeri foto pernikahan">
+      <div id="wlb-backdrop" class="absolute inset-0 bg-pine-deep/95 backdrop-blur-sm"></div>
+      <div class="relative flex h-full flex-col">
+        <div class="flex items-center justify-end px-5 py-4 text-white md:px-8">
+          <span id="wlb-counter" class="mr-auto text-xs text-white/70"></span>
+          <button type="button" id="wlb-close" aria-label="Tutup galeri" class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/20">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div id="wlb-stage" class="relative flex flex-1 items-center justify-center overflow-hidden px-3 md:px-16">
+          <img id="wlb-img" src="" alt="" class="max-h-full max-w-full select-none rounded-lg object-contain shadow-2xl" draggable="false" />
+          <button type="button" id="wlb-prev" aria-label="Foto sebelumnya" class="absolute left-2 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/20 md:grid">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" id="wlb-next" aria-label="Foto berikutnya" class="absolute right-2 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/20 md:grid">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div id="wlb-dots" class="flex flex-wrap items-center justify-center gap-2 px-5 py-5"></div>
+      </div>
+    </div>
   </main>
   <Footer />
   <BookBar />
+
+  <script>
+    const lb = document.getElementById("wedding-lightbox");
+    if (lb) {
+      const img = document.getElementById("wlb-img") as HTMLImageElement;
+      const counter = document.getElementById("wlb-counter")!;
+      const dots = document.getElementById("wlb-dots")!;
+      const stage = document.getElementById("wlb-stage")!;
+      const grid = document.getElementById("galeri-grid");
+      let list: string[] = [];
+      try { list = JSON.parse(grid?.dataset.gallery || "[]"); } catch { list = []; }
+      let idx = 0;
+
+      const preload = (src?: string) => { if (src) { const i = new Image(); i.src = src; } };
+      const render = () => {
+        img.src = list[idx];
+        img.alt = `Momen pernikahan di Rancabango — foto ${idx + 1}`;
+        counter.textContent = `${idx + 1} / ${list.length}`;
+        dots.querySelectorAll("button").forEach((d, i) =>
+          d.setAttribute("class", "h-2 rounded-full transition-all " + (i === idx ? "w-6 bg-white" : "w-2 bg-white/40 hover:bg-white/70")));
+        preload(list[(idx + 1) % list.length]);
+        preload(list[(idx - 1 + list.length) % list.length]);
+      };
+      const go = (n: number) => { idx = (n + list.length) % list.length; render(); };
+      const open = (start: number) => {
+        idx = start;
+        dots.innerHTML = "";
+        list.forEach((_, i) => {
+          const b = document.createElement("button");
+          b.type = "button"; b.setAttribute("aria-label", `Ke foto ${i + 1}`);
+          b.addEventListener("click", () => go(i));
+          dots.appendChild(b);
+        });
+        render();
+        lb.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      };
+      const close = () => { lb.classList.add("hidden"); document.body.style.overflow = ""; };
+
+      document.querySelectorAll<HTMLButtonElement>("#galeri-grid [data-index]").forEach((el) =>
+        el.addEventListener("click", () => open(Number(el.dataset.index))));
+      document.getElementById("wlb-close")!.addEventListener("click", close);
+      document.getElementById("wlb-backdrop")!.addEventListener("click", close);
+      document.getElementById("wlb-prev")!.addEventListener("click", () => go(idx - 1));
+      document.getElementById("wlb-next")!.addEventListener("click", () => go(idx + 1));
+      window.addEventListener("keydown", (e) => {
+        if (lb.classList.contains("hidden")) return;
+        if (e.key === "Escape") close();
+        else if (e.key === "ArrowRight") go(idx + 1);
+        else if (e.key === "ArrowLeft") go(idx - 1);
+      });
+      let x0: number | null = null;
+      stage.addEventListener("touchstart", (e) => { x0 = e.changedTouches[0].clientX; }, { passive: true });
+      stage.addEventListener("touchend", (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 45) go(idx + (dx < 0 ? 1 : -1));
+        x0 = null;
+      }, { passive: true });
+    }
+  </script>
 </Base>

@@ -5,6 +5,9 @@
 export const BOOKING_URL = "https://be.dip.id/booking/cekrooms?keyid=d18a85ac29c8bb3ee18fbc8d6562301b";
 export const WA_URL = "https://wa.me/628112237711";
 export const WA_NUMBER = "+62 811-2237-711";
+// Wedding punya admin sendiri (pola sama seperti link.astro: kamar, group,
+// wedding masing-masing nomor berbeda). Dipakai HANYA di halaman /wedding.
+export const WA_WEDDING_URL = "https://wa.me/6289691681905";
 export const PHONE = "0262-233369";
 export const PHONE_TEL = "tel:+62262233369";
 export const MAPS_URL = "https://maps.google.com/?q=Rancabango+Hotel+Resort+Garut";
@@ -96,15 +99,247 @@ export const wedding = {
     { id: "Venue Bali View & Plaza", en: "Bali View & Plaza venue", descId: "Ruang outdoor luas untuk akad, resepsi, hingga pesta kebun.", descEn: "Wide outdoor space for ceremony, reception, and garden parties." },
   ],
   // Foto wedding asli dari properti (dekorasi Bali, floral arch, latar gunung).
+  // w/h = dimensi asli file, dipasang di <img> supaya tidak ada layout shift.
   gallery: [
-    "/images/wedding-p1.webp",
-    "/images/wedding-hall-1.webp",
-    "/images/wedding-p2.webp",
-    "/images/wedding-hall-2.webp",
-    "/images/wedding-p3.webp",
-    "/images/gapura-person.webp",
+    { img: "/images/wedding-p1.webp", w: 988, h: 1400 },
+    { img: "/images/wedding-hall-1.webp", w: 1800, h: 1116 },
+    { img: "/images/wedding-p2.webp", w: 988, h: 1400 },
+    { img: "/images/wedding-hall-2.webp", w: 1800, h: 1116 },
+    { img: "/images/wedding-p3.webp", w: 988, h: 1400 },
+    { img: "/images/gapura-person.webp", w: 1500, h: 2246 },
   ],
 };
+
+// PAKET WEDDING 2026 — 6 paket, dua grup. Grup A "All In": harga total, hotel
+// urus semua vendor. Grup B "Katering & Venue": harga per tamu, tamu bawa
+// vendor dekorasi/MUA/foto sendiri. A2/A3 dan B2/B3 masing-masing dibangun
+// dari builder yang sama, hanya porsi buffet & food stall yang beda. Komposisi
+// buffet & food stall sama di semua paket, jadi rinciannya cuma ditulis sekali
+// di `weddingMenuNote` (lihat di bawah) — item per paket cukup sebut porsinya.
+type Bi = { id: string; en: string };
+
+export const weddingMenuNote = {
+  id: "Isi buffet & food stall sama di semua paket, beda cuma porsi. Buffet: soup, nasi, olahan daging sapi, ikan, cah/tumisan/salad, kerupuk, sambal, air mineral. Food stall: buah potong, aneka puding, 2 macam jus, mie baso/cuankie/baso tahu/sate ayam lontong, zupa soup, es cendol/ice cream/es goyobod.",
+  en: "The buffet & food stall content is the same in every package, only the portion count differs. Buffet: soup, rice, beef dishes, fish, stir-fry/salad, crackers, sambal, mineral water. Food stall: cut fruit, assorted puddings, 2 kinds of juice, mie baso/cuankie/tofu baso/chicken satay lontong, zupa soup, es cendol/ice cream/es goyobod.",
+};
+
+// 8 sub-grup Wedding Pine House untuk A2 (500 tamu) & A3 (1.000 tamu) — porsi diinterpolasi.
+function allInGroups(porsi: Bi, stall: Bi) {
+  return [
+    { title: { id: "Dekorasi", en: "Décor" }, items: [
+      { id: "Backdrop pelaminan maks 8 m (ready stock)", en: "Pelaminan backdrop, up to 8 m (ready stock)" },
+      { id: "Dekorasi bunga di atas pelaminan", en: "Floral décor above the pelaminan" },
+      { id: "Kursi pengantin dan orang tua", en: "Chairs for the couple and parents" },
+      { id: "Karpet di atas pelaminan", en: "Carpet on the pelaminan" },
+      { id: "Taman pelaminan", en: "Pelaminan garden" },
+      { id: "Backdrop stage musik", en: "Music stage backdrop" },
+      { id: "2 kotak angpau", en: "2 angpau boxes" },
+      { id: "Meja penerima tamu", en: "Guest reception table" },
+      { id: "Dekorasi meja & kursi akad nikah", en: "Table & chair décor for the akad" },
+      { id: "Hand bouquet", en: "Hand bouquet" },
+      { id: "Tenda pelaminan transparan", en: "Transparent pelaminan tent" },
+    ] },
+    { title: { id: "Venue & katering", en: "Venue & catering" }, items: [
+      { id: "Venue Bali View", en: "Bali View venue" },
+      { id: `8 menu buffet ${porsi.id} porsi`, en: `8-menu buffet, ${porsi.en} portions` },
+      { id: `7 food stall @${stall.id} porsi`, en: `7 food stalls at ${stall.en} portions each` },
+    ] },
+    { title: { id: "Organizer, MC & entertainment", en: "Organizer, MC & entertainment" }, items: [
+      { id: "1 project leader, 5 crew", en: "1 project leader, 5 crew" },
+      { id: "MC sesuai jadwal", en: "MC per schedule" },
+      { id: "2 vocal, keyboard, saxophone, sound system 3000 watt", en: "2 vocalists, keyboard, saxophone, 3,000-watt sound system" },
+    ] },
+    { title: { id: "Dokumentasi", en: "Documentation" }, items: [
+      { id: "1 hari kerja (5 jam): 1 photographer, 1 videographer, 1 asisten", en: "1 working day (5 hours): 1 photographer, 1 videographer, 1 assistant" },
+      { id: "1 wedding album 8R 20x30, 50 foto edit (Google Drive)", en: "1 wedding album 8R 20x30, 50 edited photos (Google Drive)" },
+      { id: "Video sinematik 3-5 menit, semua file di flash drive", en: "3-5 minute cinematic video, all files on a flash drive" },
+    ] },
+    { title: { id: "Make up & busana", en: "Make up & attire" }, items: [
+      { id: "Make up & hijab-do pengantin + retouch", en: "Bride's make up & hijab styling + retouch" },
+      { id: "Busana akad & resepsi pengantin (ready stock)", en: "Akad & reception outfits for the couple (ready stock)" },
+      { id: "Aksesoris akad (ready stock)", en: "Akad accessories (ready stock)" },
+      { id: "Fresh flower melati", en: "Fresh jasmine flowers" },
+      { id: "Make up & hijab-do 2 ibu", en: "Make up & hijab styling for 2 mothers" },
+      { id: "2 busana ibu, 2 busana beskap bapak", en: "2 mothers' outfits, 2 fathers' beskap outfits" },
+      { id: "2 busana + make up pager ayu, 2 busana pager bagus", en: "2 pager ayu outfits + make up, 2 pager bagus outfits" },
+    ] },
+    { title: { id: "Gratis", en: "Complimentary" }, items: [
+      { id: "3 kamar hotel", en: "3 hotel rooms" },
+      { id: "12 tray hias hantaran", en: "12 decorated hantaran trays" },
+      { id: "2 jam unlimited photobooth", en: "2 hours of unlimited photobooth" },
+      { id: "Relax home spa", en: "Relax home spa" },
+    ] },
+  ];
+}
+
+function allInHighlights(porsi: Bi, stall: Bi) {
+  return [
+    { id: `Buffet ${porsi.id} porsi + 7 food stall @${stall.id} porsi, venue Bali View`, en: `${porsi.en}-portion buffet + 7 food stalls at ${stall.en} portions each, Bali View venue` },
+    { id: "Dekorasi lengkap: backdrop pelaminan, taman, tenda transparan", en: "Full décor: pelaminan backdrop, garden, transparent tent" },
+    { id: "Make up, busana & dokumentasi lengkap untuk pengantin dan keluarga", en: "Full make up, attire & documentation for the couple and family" },
+    { id: "Gratis 3 kamar hotel, hantaran, dan photobooth unlimited", en: "Complimentary 3 hotel rooms, hantaran, and unlimited photobooth" },
+  ];
+}
+
+// Katering + venue untuk B2 (500 tamu) & B3 (min. 1.000 tamu) — porsi diinterpolasi.
+function kateringGroups(porsi: Bi, stall: Bi) {
+  return [
+    { title: { id: "Katering", en: "Catering" }, items: [
+      { id: `Buffet ${porsi.id} porsi`, en: `Buffet, ${porsi.en} portions` },
+      { id: `7 food stall @${stall.id} porsi`, en: `7 food stalls at ${stall.en} portions each` },
+      { id: "Snack box technical meeting", en: "Snack box for the technical meeting" },
+      { id: "6 pax taste food", en: "Taste food for 6" },
+      { id: "Nasi Huap Lingkung", en: "Nasi Huap Lingkung" },
+    ] },
+    // Item generik (venue, kursi, listrik, diskon, ruang rias/meeting, tempat
+    // prewedding) sudah ada satu kali di strip "Yang selalu didapat", jadi di
+    // sini cukup yang spesifik ke paket ini (kamar).
+    { title: { id: "Akomodasi", en: "Accommodation" }, items: [
+      { id: "2 kamar Bungalow Cigintung 1 malam", en: "2 Bungalow Cigintung rooms for a night" },
+      { id: "1 kamar pengantin 1 malam", en: "1 bridal room for a night" },
+    ] },
+  ];
+}
+
+function kateringHighlights(porsi: Bi, stall: Bi) {
+  return [
+    { id: `Buffet ${porsi.id} porsi + 7 food stall @${stall.id} porsi, venue Bali View`, en: `${porsi.en}-portion buffet + 7 food stalls at ${stall.en} portions each, Bali View venue` },
+    { id: "2 kamar Bungalow Cigintung 1 malam + 1 kamar pengantin 1 malam", en: "2 Bungalow Cigintung rooms for a night + 1 bridal room for a night" },
+    { id: "Tempat prewedding tersedia", en: "Prewedding location available" },
+    { id: "Ruang rias & ruang meeting termasuk", en: "Bridal dressing room & meeting room included" },
+  ];
+}
+
+export const weddingPackages = [
+  {
+    slug: "a1-intimate-all-in",
+    name: { id: "Rancabango Intimate Wedding All In", en: "Rancabango Intimate Wedding All In" },
+    paxLabel: { id: "250 tamu", en: "250 guests" },
+    paxNum: 250,
+    price: 88000000,
+    unit: "total" as const,
+    note: { id: "", en: "" },
+    tagline: { id: "Skala paling ringkas: 250 tamu, kirab saxophone, dan satu villa untuk bermalam.", en: "The most compact scale: 250 guests, a saxophone kirab procession, and a villa to stay the night." },
+    highlights: [
+      { id: "Buffet 250 porsi + 5 food stall @125 porsi", en: "250-portion buffet + 5 food stalls at 125 portions each" },
+      { id: "1 villa 1 malam + 1 kamar pengantin 1 malam", en: "1 villa for a night + 1 bridal room for a night" },
+      { id: "Dekorasi, dokumentasi, wedding organizer, MC, dan entertainment (kirab saxophone)", en: "Décor, documentation, wedding organizer, MC, and entertainment (saxophone kirab)" },
+      { id: "Venue Bali View / Plaza, 100 kursi & 5 round table", en: "Bali View / Plaza venue, 100 chairs & 5 round tables" },
+    ],
+    groups: [
+      { title: { id: "Katering", en: "Catering" }, items: [
+        { id: "Buffet 250 porsi", en: "Buffet, 250 portions" },
+        { id: "5 food stall @125 porsi", en: "5 food stalls at 125 portions each" },
+        { id: "Snack box & coffee break technical meeting", en: "Snack box & coffee break for the technical meeting" },
+        { id: "6 pax taste food", en: "Taste food for 6" },
+        { id: "Nasi Huap Lingkung", en: "Nasi Huap Lingkung" },
+      ] },
+      { title: { id: "Akomodasi", en: "Accommodation" }, items: [
+        { id: "1 villa 1 malam", en: "1 villa for a night" },
+        { id: "1 kamar pengantin 1 malam", en: "1 bridal room for a night" },
+      ] },
+      { title: { id: "Dekorasi & tim acara", en: "Décor & event team" }, items: [
+        { id: "Dekorasi", en: "Décor" },
+        { id: "Dokumentasi foto & video", en: "Photo & video documentation" },
+        { id: "Wedding organizer", en: "Wedding organizer" },
+        { id: "Entertainment (termasuk kirab saxophone)", en: "Entertainment (including saxophone kirab)" },
+        { id: "MC", en: "MC" },
+      ] },
+    ],
+  },
+  {
+    slug: "a2-wedding-package-all-in",
+    name: { id: "Wedding Package All In", en: "Wedding Package All In" },
+    paxLabel: { id: "500 tamu", en: "500 guests" },
+    paxNum: 500,
+    price: 106000000,
+    unit: "total" as const,
+    note: { id: "", en: "" },
+    tagline: { id: "Skala menengah, 500 tamu, dengan dekorasi, MUA, busana, dan dokumentasi lengkap dari Wedding Pine House.", en: "Mid-size scale, 500 guests, with full décor, make up, attire, and documentation from Wedding Pine House." },
+    highlights: allInHighlights({ id: "500", en: "500" }, { id: "150", en: "150" }),
+    groups: allInGroups({ id: "500", en: "500" }, { id: "150", en: "150" }),
+  },
+  {
+    slug: "a3-balinese-wedding-all-in",
+    name: { id: "Balinese Wedding All In", en: "Balinese Wedding All In" },
+    paxLabel: { id: "1.000 tamu", en: "1,000 guests" },
+    paxNum: 1000,
+    price: 150000000,
+    unit: "total" as const,
+    note: { id: "", en: "" },
+    tagline: { id: "Skala besar untuk 1.000 tamu, dengan dekorasi, MUA, busana, dan dokumentasi lengkap dari Wedding Pine House.", en: "Large scale for 1,000 guests, with full décor, make up, attire, and documentation from Wedding Pine House." },
+    highlights: allInHighlights({ id: "1.000", en: "1,000" }, { id: "300", en: "300" }),
+    groups: allInGroups({ id: "1.000", en: "1,000" }, { id: "300", en: "300" }),
+  },
+  {
+    slug: "b1-rancabango-wedding-catering",
+    name: { id: "Rancabango Wedding Catering", en: "Rancabango Wedding Catering" },
+    paxLabel: { id: "250 tamu", en: "250 guests" },
+    paxNum: 250,
+    price: 185000,
+    unit: "perPax" as const,
+    note: { id: "", en: "" },
+    tagline: { id: "Venue Rancabango Plaza untuk 250 tamu, dengan villa menginap dua malam.", en: "Rancabango Plaza venue for 250 guests, with two nights in the villa." },
+    highlights: [
+      { id: "Buffet 250 porsi + 5 food stall @125 porsi", en: "250-portion buffet + 5 food stalls at 125 portions each" },
+      { id: "1 villa 2 malam + 1 kamar pengantin 1 malam", en: "1 villa for two nights + 1 bridal room for a night" },
+      { id: "Venue Rancabango Plaza, 100 kursi & 5 round table", en: "Rancabango Plaza venue, 100 chairs & 5 round tables" },
+      { id: "Ruang rias & ruang meeting termasuk", en: "Bridal dressing room & meeting room included" },
+    ],
+    groups: [
+      { title: { id: "Katering", en: "Catering" }, items: [
+        { id: "Buffet 250 porsi", en: "Buffet, 250 portions" },
+        { id: "5 food stall @125 porsi", en: "5 food stalls at 125 portions each" },
+        { id: "Snack box & coffee break", en: "Snack box & coffee break" },
+        { id: "6 pax taste food", en: "Taste food for 6" },
+        { id: "Nasi Huap Lingkung", en: "Nasi Huap Lingkung" },
+      ] },
+      { title: { id: "Akomodasi", en: "Accommodation" }, items: [
+        { id: "1 villa 2 malam", en: "1 villa for two nights" },
+        { id: "1 kamar pengantin 1 malam", en: "1 bridal room for a night" },
+      ] },
+    ],
+  },
+  {
+    slug: "b2-balinese-wedding-catering-500",
+    name: { id: "Balinese Wedding Catering", en: "Balinese Wedding Catering" },
+    paxLabel: { id: "500 tamu", en: "500 guests" },
+    paxNum: 500,
+    price: 99000,
+    unit: "perPax" as const,
+    note: { id: "", en: "" },
+    tagline: { id: "Venue Bali View untuk 500 tamu, katering saja, dekorasi dan MUA kamu yang atur.", en: "Bali View venue for 500 guests, catering only, you arrange décor and make up." },
+    highlights: kateringHighlights({ id: "500", en: "500" }, { id: "150", en: "150" }),
+    groups: kateringGroups({ id: "500", en: "500" }, { id: "150", en: "150" }),
+  },
+  {
+    slug: "b3-balinese-wedding-catering-1000",
+    name: { id: "Balinese Wedding Catering", en: "Balinese Wedding Catering" },
+    paxLabel: { id: "minimum 1.000 tamu", en: "minimum 1,000 guests" },
+    paxNum: 1000,
+    price: 96000,
+    unit: "perPax" as const,
+    note: { id: "Harga berlaku untuk minimum 1.000 tamu.", en: "Rate applies for a minimum of 1,000 guests." },
+    tagline: { id: "Skala terbesar, minimum 1.000 tamu, harga per tamu paling hemat di grup Katering.", en: "The largest scale, minimum 1,000 guests, the lowest per-guest rate in the Catering group." },
+    highlights: kateringHighlights({ id: "1.000", en: "1,000" }, { id: "300", en: "300" }),
+    groups: kateringGroups({ id: "1.000", en: "1,000" }, { id: "300", en: "300" }),
+  },
+];
+
+// Fasilitas yang sama di semua paket wedding — dipakai di strip bawah #paket.
+export const weddingFacilities = [
+  { id: "Venue Bali View / Plaza", en: "Bali View / Plaza venue" },
+  { id: "Ruang rias", en: "Bridal dressing room" },
+  { id: "Ruang meeting untuk technical meeting", en: "Meeting room for technical meetings" },
+  { id: "100 kursi & 5 round table", en: "100 chairs & 5 round tables" },
+  { id: "Listrik 6000 watt", en: "6,000-watt electricity" },
+  { id: "Diskon kamar 20% untuk keluarga", en: "20% family room discount" },
+  { id: "Tempat prewedding", en: "Prewedding location" },
+];
+
+// Pesan WA otomatis dari kartu paket — href statis, jadi cukup bahasa Indonesia.
+export const waWedding = (nama: string, pax: string) =>
+  WA_WEDDING_URL + "?text=" + encodeURIComponent(`Halo, saya ingin tanya paket ${nama} (${pax}).`);
 
 // Halaman MEETING & EVENTS (/meetings).
 export const meetings = {
